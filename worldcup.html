@@ -1,867 +1,383 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FIFA World Cup 2026 Fixtures - Morning Sun Football Club</title>
-<!-- Tailwind CSS CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
-<!-- Plus Jakarta Sans Font -->
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
-<!-- Lucide Icons -->
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>
-body {
-font-family: 'Plus Jakarta Sans', sans-serif;
-}
-@keyframes spinBall {
-0% { transform: rotate(0deg); }
-100% { transform: rotate(360deg); }
-}
-@keyframes pulsateSun {
-0%, 100% { transform: scale(1); filter: brightness(1); }
-50% { transform: scale(1.08); filter: brightness(1.2); }
-}
-@keyframes floatBirds {
-0%, 100% { transform: translateY(0px) translateX(0px); }
-50% { transform: translateY(-5px) translateX(8px); }
-}
-.animate-spin-ball {
-transform-origin: 260px 375px;
-animation: spinBall 12s linear infinite;
-}
-.animate-pulse-sun {
-transform-origin: 260px 180px;
-animation: pulsateSun 4s ease-in-out infinite;
-}
-.animate-birds {
-animation: floatBirds 6s ease-in-out infinite;
-}
-/* Simple custom track scrollbar for a premium dark look */
-::-webkit-scrollbar {
-width: 8px;
-}
-::-webkit-scrollbar-track {
-background: #061021;
-}
-::-webkit-scrollbar-thumb {
-background: #112f57;
-border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-background: #E5A93B;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIFA World Cup 2026 Fixtures - Morning Sun Football Club</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;600;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #061021;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #112f57;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #E5A93B;
+    }
+  </style>
 </head>
 <body class="bg-[#061021] text-gray-100 min-h-screen flex flex-col antialiased">
 
-<!-- Interactive App Mount Root -->
-<div id="app" class="flex-grow flex flex-col"></div>
+  <div id="app" class="flex-grow flex flex-col"></div>
 
-<!-- React Dependencies via CDN -->
-<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<script type="text/babel">
-const { useState, useEffect } = React;
+  <script type="text/babel">
+    const { useState, useEffect } = React;
 
-const fixtureData = [
-// --- PAGE 1 (Matches 1-12) ---
-{ id: 1, page: 1, matchNum: 1, time: "Fri Jun 12, 1:00 AM", team1: "Mexico", team1Code: "MEX", team2: "South Africa", team2Code: "RSA", stadium: "Mexico City Stadium", city: "Mexico City", group: "A", team1Flag: "🇲🇽", team2Flag: "🇿🇦" },
-{ id: 2, page: 1, matchNum: 2, time: "Fri Jun 12, 8:00 AM", team1: "South Korea", team1Code: "KOR", team2: "Czechia", team2Code: "CZE", stadium: "Estadio Guadalajara", city: "Zapopan", group: "A", team1Flag: "🇰🇷", team2Flag: "🇨🇿" },
-{ id: 3, page: 1, matchNum: 3, time: "Sat Jun 13, 1:00 AM", team1: "Canada", team1Code: "CAN", team2: "Bosnia & Herzegovina", team2Code: "BIH", stadium: "Toronto Stadium", city: "Toronto", group: "B", team1Flag: "🇨🇦", team2Flag: "🇧🇦" },
-{ id: 4, page: 1, matchNum: 4, time: "Sat Jun 13, 7:00 AM", team1: "USA", team1Code: "USA", team2: "Paraguay", team2Code: "PAR", stadium: "Los Angeles Stadium", city: "Inglewood", group: "D", team1Flag: "🇺🇸", team2Flag: "🇵🇾" },
-{ id: 5, page: 1, matchNum: 5, time: "Sun Jun 14, 4:00 AM", team1: "Brazil", team1Code: "BRA", team2: "Morocco", team2Code: "MAR", stadium: "New York New Jersey Stadium", city: "New York", group: "C", team1Flag: "🇧🇷", team2Flag: "🇲🇦" },
-{ id: 6, page: 1, matchNum: 6, time: "Sun Jun 14, 7:00 AM", team1: "Haiti", team1Code: "HTI", team2: "Scotland", team2Code: "SCO", stadium: "Boston Stadium", city: "Boston", group: "C", team1Flag: "🇭🇹", team2Flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
-{ id: 7, page: 1, matchNum: 7, time: "Sun Jun 14, 8:00 AM", team1: "Australia", team1Code: "AUS", team2: "Turkey", team2Code: "TUR", stadium: "Arrowhead Stadium", city: "Kansas City", group: "D", team1Flag: "🇦🇺", team2Flag: "🇹🇷" },
-{ id: 8, page: 1, matchNum: 8, time: "Mon Jun 15, 1:00 AM", team1: "Germany", team1Code: "GER", team2: "Curacao", team2Code: "CUW", stadium: "NRG Stadium", city: "Houston", group: "E", team1Flag: "🇩🇪", team2Flag: "🇨🇼" },
-{ id: 9, page: 1, matchNum: 9, time: "Mon Jun 15, 4:00 AM", team1: "Ivory Coast", team1Code: "CIV", team2: "Ecuador", team2Code: "ECU", stadium: "Levi's Stadium", city: "San Francisco", group: "E", team1Flag: "🇨🇮", team2Flag: "🇪🇨" },
-{ id: 10, page: 1, matchNum: 10, time: "Mon Jun 15, 7:00 AM", team1: "Netherlands", team1Code: "NED", team2: "Japan", team2Code: "JPN", stadium: "AT&T Stadium", city: "Dallas", group: "F", team1Flag: "🇳🇱", team2Flag: "🇯🇵" },
-{ id: 11, page: 1, matchNum: 11, time: "Tue Jun 16, 1:00 AM", team1: "Sweden", team1Code: "SWE", team2: "Tunisia", team2Code: "TUN", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "F", team1Flag: "🇸🇪", team2Flag: "🇹🇳" },
-{ id: 12, page: 1, matchNum: 12, time: "Tue Jun 16, 4:00 AM", team1: "Belgium", team1Code: "BEL", team2: "Egypt", team2Code: "EGY", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "G", team1Flag: "🇧🇪", team2Flag: "🇪🇬" },
+    const fixtureData = [
+      { id: 1, matchNum: 1, time: "Fri Jun 12, 1:00 AM", team1: "Mexico", team1Code: "MEX", team2: "South Africa", team2Code: "RSA", stadium: "Mexico City Stadium", city: "Mexico City", group: "Group A", team1Flag: "🇲🇽", team2Flag: "🇿🇦" },
+      { id: 2, matchNum: 2, time: "Fri Jun 12, 8:00 AM", team1: "South Korea", team1Code: "KOR", team2: "Czechia", team2Code: "CZE", stadium: "Estadio Guadalajara", city: "Zapopan", group: "Group A", team1Flag: "🇰🇷", team2Flag: "🇨🇿" },
+      { id: 3, matchNum: 3, time: "Sat Jun 13, 1:00 AM", team1: "Canada", team1Code: "CAN", team2: "Bosnia & Herzegovina", team2Code: "BIH", stadium: "Toronto Stadium", city: "Toronto", group: "Group B", team1Flag: "🇨🇦", team2Flag: "🇧🇦" },
+      { id: 4, matchNum: 4, time: "Sat Jun 13, 7:00 AM", team1: "USA", team1Code: "USA", team2: "Paraguay", team2Code: "PAR", stadium: "Los Angeles Stadium", city: "Inglewood", group: "Group D", team1Flag: "🇺🇸", team2Flag: "🇵🇾" },
+      { id: 5, matchNum: 5, time: "Sun Jun 14, 4:00 AM", team1: "Brazil", team1Code: "BRA", team2: "Morocco", team2Code: "MAR", stadium: "New York New Jersey Stadium", city: "New York", group: "Group C", team1Flag: "🇧🇷", team2Flag: "🇲🇦" },
+      { id: 6, matchNum: 6, time: "Sun Jun 14, 7:00 AM", team1: "Haiti", team1Code: "HTI", team2: "Scotland", team2Code: "SCO", stadium: "Boston Stadium", city: "Boston", group: "Group C", team1Flag: "🇭🇹", team2Flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
+      { id: 7, matchNum: 7, time: "Sun Jun 14, 8:00 AM", team1: "Australia", team1Code: "AUS", team2: "Turkey", team2Code: "TUR", stadium: "Arrowhead Stadium", city: "Kansas City", group: "Group D", team1Flag: "🇦🇺", team2Flag: "🇹🇷" },
+      { id: 8, matchNum: 8, time: "Mon Jun 15, 1:00 AM", team1: "Germany", team1Code: "GER", team2: "Curacao", team2Code: "CUW", stadium: "NRG Stadium", city: "Houston", group: "Group E", team1Flag: "🇩🇪", team2Flag: "🇨🇼" },
+      { id: 9, matchNum: 9, time: "Mon Jun 15, 4:00 AM", team1: "Ivory Coast", team1Code: "CIV", team2: "Ecuador", team2Code: "ECU", stadium: "Levi's Stadium", city: "San Francisco", group: "Group E", team1Flag: "🇨🇮", team2Flag: "🇪🇨" },
+      { id: 10, matchNum: 10, time: "Mon Jun 15, 7:00 AM", team1: "Netherlands", team1Code: "NED", team2: "Japan", team2Code: "JPN", stadium: "AT&T Stadium", city: "Dallas", group: "Group F", team1Flag: "🇳🇱", team2Flag: "🇯🇵" },
+      { id: 11, matchNum: 11, time: "Tue Jun 16, 1:00 AM", team1: "Sweden", team1Code: "SWE", team2: "Tunisia", team2Code: "TUN", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "Group F", team1Flag: "🇸🇪", team2Flag: "🇹🇳" },
+      { id: 12, matchNum: 12, time: "Tue Jun 16, 4:00 AM", team1: "Belgium", team1Code: "BEL", team2: "Egypt", team2Code: "EGY", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "Group G", team1Flag: "🇧🇪", team2Flag: "🇪🇬" },
+      { id: 13, matchNum: 13, time: "Tue Jun 16, 7:00 AM", team1: "Iran", team1Code: "IRN", team2: "New Zealand", team2Code: "NZL", stadium: "M&T Bank Stadium", city: "Baltimore", group: "Group G", team1Flag: "🇮🇷", team2Flag: "🇳🇿" },
+      { id: 14, matchNum: 14, time: "Wed Jun 17, 1:00 AM", team1: "Spain", team1Code: "ESP", team2: "Cape Verde", team2Code: "CPV", stadium: "Lumen Field", city: "Seattle", group: "Group H", team1Flag: "🇪🇸", team2Flag: "🇨🇻" },
+      { id: 15, matchNum: 15, time: "Wed Jun 17, 4:00 AM", team1: "Saudi Arabia", team1Code: "KSA", team2: "Uruguay", team2Code: "URU", stadium: "Estadio Monterrey", city: "Monterrey", group: "Group H", team1Flag: "🇸🇦", team2Flag: "🇺🇾" },
+      { id: 16, matchNum: 16, time: "Wed Jun 17, 8:00 AM", team1: "England", team1Code: "ENG", team2: "Croatia", team2Code: "CRO", stadium: "AT&T Stadium", city: "Dallas", group: "Group L", team1Flag: "🏴\u200d󠁢󠁥󠁮󠁧󠁿", team2Flag: "🇭🇷" },
+{ id: 17, matchNum: 17, time: "Thu Jun 18, 2:00 AM", team1: "Ghana", team1Code: "GHA", team2: "Panama", team2Code: "PAN", stadium: "Toronto Stadium", city: "Toronto", group: "Group L", team1Flag: "🇬🇭", team2Flag: "🇵🇦" },
+      { id: 18, matchNum: 18, time: "Thu Jun 18, 5:00 AM", team1: "Uzbekistan", team1Code: "UZB", team2: "Colombia", team2Code: "COL", stadium: "Mexico City Stadium", city: "Mexico City", group: "Group K", team1Flag: "🇺🇿", team2Flag: "🇨🇴" },
+      { id: 19, matchNum: 19, time: "Thu Jun 18, 8:00 AM", team1: "South Africa", team1Code: "RSA", team2: "Czechia", team2Code: "CZE", stadium: "Mexico City Stadium", city: "Mexico City", group: "Group A", team1Flag: "🇿🇦", team2Flag: "🇨🇿" },
+      { id: 20, matchNum: 20, time: "Fri Jun 19, 2:00 AM", team1: "Mexico", team1Code: "MEX", team2: "South Korea", team2Code: "KOR", stadium: "Estadio Guadalajara", city: "Zapopan", group: "Group A", team1Flag: "🇲🇽", team2Flag: "🇰🇷" },
+      { id: 21, matchNum: 21, time: "Fri Jun 19, 5:00 AM", team1: "Bosnia & Herzegovina", team1Code: "BIH", team2: "Switzerland", team2Code: "SUI", stadium: "Toronto Stadium", city: "Toronto", group: "Group B", team1Flag: "🇧🇦", team2Flag: "🇨🇭" },
+      { id: 22, matchNum: 22, time: "Fri Jun 19, 8:00 AM", team1: "Canada", team1Code: "CAN", team2: "Qatar", team2Code: "QAT", stadium: "BC Place", city: "Vancouver", group: "Group B", team1Flag: "🇨🇦", team2Flag: "🇶🇦" },
+      { id: 23, matchNum: 23, time: "Sat Jun 20, 1:00 AM", team1: "Morocco", team1Code: "MAR", team2: "Scotland", team2Code: "SCO", stadium: "SoFi Stadium", city: "Los Angeles", group: "Group C", team1Flag: "🇲🇦", team2Flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
+      { id: 24, matchNum: 24, time: "Sat Jun 20, 4:00 AM", team1: "Brazil", team1Code: "BRA", team2: "Haiti", team2Code: "HTI", stadium: "Levi's Stadium", city: "San Francisco", group: "Group C", team1Flag: "🇧🇷", team2Flag: "🇭🇹" },
+      { id: 25, matchNum: 25, time: "Sat Jun 20, 7:00 AM", team1: "Paraguay", team1Code: "PAR", team2: "Turkey", team2Code: "TUR", stadium: "MetLife Stadium", city: "New York", group: "Group D", team1Flag: "🇵🇾", team2Flag: "🇹🇷" },
+      { id: 26, matchNum: 26, time: "Sun Jun 21, 1:00 AM", team1: "USA", team1Code: "USA", team2: "Australia", team2Code: "AUS", stadium: "Lumen Field", city: "Seattle", group: "Group D", team1Flag: "🇺🇸", team2Flag: "🇦🇺" },
+      { id: 27, matchNum: 27, time: "Sun Jun 21, 4:00 AM", team1: "Curacao", team1Code: "CUW", team2: "Ecuador", team2Code: "ECU", stadium: "Arrowhead Stadium", city: "Kansas City", group: "Group E", team1Flag: "🇨🇼", team2Flag: "🇪🇨" },
+      { id: 28, matchNum: 28, time: "Sun Jun 21, 7:00 AM", team1: "Germany", team1Code: "GER", team2: "Ivory Coast", team2Code: "CIV", stadium: "NRG Stadium", city: "Houston", group: "Group E", team1Flag: "🇩🇪", team2Flag: "🇨🇮" },
+      { id: 29, matchNum: 29, time: "Mon Jun 22, 1:00 AM", team1: "Japan", team1Code: "JPN", team2: "Tunisia", team2Code: "TUN", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "Group F", team1Flag: "🇯🇵", team2Flag: "🇹🇳" },
+      { id: 30, matchNum: 30, time: "Mon Jun 22, 4:00 AM", team1: "Netherlands", team1Code: "NED", team2: "Sweden", team2Code: "SWE", stadium: "AT&T Stadium", city: "Dallas", group: "Group F", team1Flag: "🇳🇱", team2Flag: "🇸🇪" },
+      { id: 31, matchNum: 31, time: "Mon Jun 22, 7:00 AM", team1: "Egypt", team1Code: "EGY", team2: "New Zealand", team2Code: "NZL", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "Group G", team1Flag: "🇪🇬", team2Flag: "🇳🇿" },
+      { id: 32, matchNum: 32, time: "Tue Jun 23, 1:00 AM", team1: "Belgium", team1Code: "BEL", team2: "Iran", team2Code: "IRN", stadium: "M&T Bank Stadium", city: "Baltimore", group: "Group G", team1Flag: "🇧🇪", team2Flag: "🇮🇷" },
+      { id: 33, matchNum: 33, time: "Wed Jun 24, 1:00 AM", team1: "Mexico", team1Code: "MEX", team2: "Czechia", team2Code: "CZE", stadium: "Estadio Monterrey", city: "Monterrey", group: "Group A", team1Flag: "🇲🇽", team2Flag: "🇨🇿" },
+      { id: 34, matchNum: 34, time: "Wed Jun 24, 1:00 AM", team1: "South Africa", team1Code: "RSA", team2: "South Korea", team2Code: "KOR", stadium: "Estadio Guadalajara", city: "Zapopan", group: "Group A", team1Flag: "🇿🇦", team2Flag: "🇰🇷" },
+      { id: 35, matchNum: 35, time: "Wed Jun 24, 5:00 AM", team1: "Canada", team1Code: "CAN", team2: "Switzerland", team2Code: "SUI", stadium: "BC Place", city: "Vancouver", group: "Group B", team1Flag: "🇨🇦", team2Flag: "🇨🇭" },
+      { id: 36, matchNum: 36, time: "Wed Jun 24, 5:00 AM", team1: "Bosnia & Herzegovina", team1Code: "BIH", team2: "Qatar", team2Code: "QAT", stadium: "Toronto Stadium", city: "Toronto", group: "Group B", team1Flag: "🇧🇦", team2Flag: "🇶🇦" },
+      { id: 37, matchNum: 37, time: "Thu Jun 25, 1:00 AM", team1: "Brazil", team1Code: "BRA", team2: "Scotland", team2Code: "SCO", stadium: "SoFi Stadium", city: "Los Angeles", group: "Group C", team1Flag: "🇧🇷", team2Flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
+      { id: 38, matchNum: 38, time: "Thu Jun 25, 1:00 AM", team1: "Morocco", team1Code: "MAR", team2: "Haiti", team2Code: "HTI", stadium: "Levi's Stadium", city: "San Francisco", group: "Group C", team1Flag: "🇲🇦", team2Flag: "🇭🇹" },
+      { id: 39, matchNum: 39, time: "Thu Jun 25, 7:00 AM", team1: "USA", team1Code: "USA", team2: "Turkey", team2Code: "TUR", stadium: "MetLife Stadium", city: "New York", group: "Group D", team1Flag: "🇺🇸", team2Flag: "🇹🇷" },
+      { id: 40, matchNum: 40, time: "Thu Jun 25, 7:00 AM", team1: "Paraguay", team1Code: "PAR", team2: "Australia", team2Code: "AUS", stadium: "Lumen Field", city: "Seattle", group: "Group D", team1Flag: "🇵🇾", team2Flag: "🇦🇺" },
+      { id: 41, matchNum: 41, time: "Fri Jun 26, 1:00 AM", team1: "Germany", team1Code: "GER", team2: "Ecuador", team2Code: "ECU", stadium: "NRG Stadium", city: "Houston", group: "Group E", team1Flag: "🇩🇪", team2Flag: "🇪🇨" },
+      { id: 42, matchNum: 42, time: "Fri Jun 26, 1:00 AM", team1: "Curacao", team1Code: "CUW", team2: "Ivory Coast", team2Code: "CIV", stadium: "Arrowhead Stadium", city: "Kansas City", group: "Group E", team1Flag: "🇨🇼", team2Flag: "🇨🇮" },
+      { id: 43, matchNum: 43, time: "Fri Jun 26, 7:00 AM", team1: "Netherlands", team1Code: "NED", team2: "Tunisia", team2Code: "TUN", stadium: "AT&T Stadium", city: "Dallas", group: "Group F", team1Flag: "🇳🇱", team2Flag: "🇹🇳" },
+      { id: 44, matchNum: 44, time: "Fri Jun 26, 7:00 AM", team1: "Japan", team1Code: "JPN", team2: "Sweden", team2Code: "SWE", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "Group F", team1Flag: "🇯🇵", team2Flag: "🇸🇪" },
+      { id: 45, matchNum: 45, time: "Sat Jun 27, 1:00 AM", team1: "Belgium", team1Code: "BEL", team2: "New Zealand", team2Code: "NZL", stadium: "M&T Bank Stadium", city: "Baltimore", group: "Group G", team1Flag: "🇧🇪", team2Flag: "🇳🇿" },
+      { id: 46, matchNum: 46, time: "Sat Jun 27, 4:00 AM", team1: "Egypt", team1Code: "EGY", team2: "Iran", team2Code: "IRN", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "Group G", team1Flag: "🇪🇬", team2Flag: "🇮🇷" },
+      { id: 47, matchNum: 47, time: "Sat Jun 27, 7:00 AM", team1: "Spain", team1Code: "ESP", team2: "Uruguay", team2Code: "URU", stadium: "Lumen Field", city: "Seattle", group: "Group H", team1Flag: "🇪🇸", team2Flag: "🇺🇾" },
+      { id: 48, matchNum: 48, time: "Sun Jun 28, 1:00 AM", team1: "Cape Verde", team1Code: "CPV", team2: "Saudi Arabia", team2Code: "KSA", stadium: "Estadio Monterrey", city: "Monterrey", group: "Group H", team1Flag: "🇨🇻", team2Flag: "🇸🇦" }
+    ];
 
-// --- PAGE 2 (Matches 13-24) ---
-{ id: 13, page: 2, matchNum: 13, time: "Tue Jun 16, 7:00 AM", team1: "Iran", team1Code: "IRN", team2: "New Zealand", team2Code: "NZL", stadium: "M&T Bank Stadium", city: "Baltimore", group: "G", team1Flag: "🇮🇷", team2Flag: "🇳🇿" },
-{ id: 14, page: 2, matchNum: 14, time: "Wed Jun 17, 1:00 AM", team1: "Spain", team1Code: "ESP", team2: "Cape Verde", team2Code: "CPV", stadium: "Lumen Field", city: "Seattle", group: "H", team1Flag: "🇪🇸", team2Flag: "🇨🇻" },
-{ id: 15, page: 2, matchNum: 15, time: "Wed Jun 17, 4:00 AM", team1: "Saudi Arabia", team1Code: "KSA", team2: "Uruguay", team2Code: "URU", stadium: "Estadio Monterrey", city: "Monterrey", group: "H", team1Flag: "🇸🇦", team2Flag: "🇺🇾" },
-{ id: 16, page: 2, matchNum: 16, time: "Wed Jun 17, 8:00 AM", team1: "England", team1Code: "ENG", team2: "Croatia", team2Code: "CRO", stadium: "AT&T Stadium", city: "Dallas", group: "L", team1Flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", team2Flag: "🇭🇷" },
-{ id: 17, page: 2, matchNum: 17, time: "Thu Jun 18, 2:00 AM", team1: "Ghana", team1Code: "GHA", team2: "Panama", team2Code: "PAN", stadium: "Toronto Stadium", city: "Toronto", group: "L", team1Flag: "🇬🇭", team2Flag: "🇵🇦" },
-{ id: 18, page: 2, matchNum: 18, time: "Thu Jun 18, 5:00 AM", team1: "Uzbekistan", team1Code: "UZB", team2: "Colombia", team2Code: "COL", stadium: "Mexico City Stadium", city: "Mexico City", group: "K", team1Flag: "🇺🇿", team2Flag: "🇨🇴" },
-{ id: 19, page: 2, matchNum: 19, time: "Thu Jun 18, 8:00 AM", team1: "South Africa", team1Code: "RSA", team2: "Czechia", team2Code: "CZE", stadium: "Mexico City Stadium", city: "Mexico City", group: "A", team1Flag: "🇿🇦", team2Flag: "🇨🇿" },
-{ id: 20, page: 2, matchNum: 20, time: "Fri Jun 19, 2:00 AM", team1: "Mexico", team1Code: "MEX", team2: "South Korea", team2Code: "KOR", stadium: "Estadio Guadalajara", city: "Zapopan", group: "A", team1Flag: "🇲🇽", team2Flag: "🇰🇷" },
-{ id: 21, page: 2, matchNum: 21, time: "Fri Jun 19, 5:00 AM", team1: "Bosnia & Herzegovina", team1Code: "BIH", team2: "Switzerland", team2Code: "SUI", stadium: "Toronto Stadium", city: "Toronto", group: "B", team1Flag: "🇧🇦", team2Flag: "🇨🇭" },
-{ id: 22, page: 2, matchNum: 22, time: "Fri Jun 19, 8:00 AM", team1: "Canada", team1Code: "CAN", team2: "Qatar", team2Code: "QAT", stadium: "BC Place", city: "Vancouver", group: "B", team1Flag: "🇨🇦", team2Flag: "🇶🇦" },
-{ id: 23, page: 2, matchNum: 23, time: "Sat Jun 20, 1:00 AM", team1: "Morocco", team1Code: "MAR", team2: "Scotland", team2Code: "SCO", stadium: "SoFi Stadium", city: "Los Angeles", group: "C", team1Flag: "🇲🇦", team2Flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
-{ id: 24, page: 2, matchNum: 24, time: "Sat Jun 20, 4:00 AM", team1: "Brazil", team1Code: "BRA", team2: "Haiti", team2Code: "HTI", stadium: "Levi's Stadium", city: "San Francisco", group: "C", team1Flag: "🇧🇷", team2Flag: "🇭🇹" },
+    function App() {
+      const [spacingValue, setSpacingValue] = useState(24);
+      const [searchTerm, setSearchTerm] = useState('');
+      const [predictions, setPredictions] = useState({});
+      const [countdown, setCountdown] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
 
-// --- PAGE 3 (Matches 25-36) ---
-{ id: 25, page: 3, matchNum: 25, time: "Sat Jun 20, 7:00 AM", team1: "Paraguay", team1Code: "PAR", team2: "Turkey", team2Code: "TUR", stadium: "MetLife Stadium", city: "New York", group: "D", team1Flag: "🇵🇾", team2Flag: "🇹🇷" },
-{ id: 26, page: 3, matchNum: 26, time: "Sun Jun 21, 1:00 AM", team1: "USA", team1Code: "USA", team2: "Australia", team2Code: "AUS", stadium: "Lumen Field", city: "Seattle", group: "D", team1Flag: "🇺🇸", team2Flag: "🇦🇺" },
-{ id: 27, page: 3, matchNum: 27, time: "Sun Jun 21, 4:00 AM", team1: "Curacao", team1Code: "CUW", team2: "Ecuador", team2Code: "ECU", stadium: "Arrowhead Stadium", city: "Kansas City", group: "E", team1Flag: "🇨🇼", team2Flag: "🇪🇨" },
-{ id: 28, page: 3, matchNum: 28, time: "Sun Jun 21, 7:00 AM", team1: "Germany", team1Code: "GER", team2: "Ivory Coast", team2Code: "CIV", stadium: "NRG Stadium", city: "Houston", group: "E", team1Flag: "🇩🇪", team2Flag: "🇨🇮" },
-{ id: 29, page: 3, matchNum: 29, time: "Mon Jun 22, 1:00 AM", team1: "Japan", team1Code: "JPN", team2: "Tunisia", team2Code: "TUN", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "F", team1Flag: "🇯🇵", team2Flag: "🇹🇳" },
-{ id: 30, page: 3, matchNum: 30, time: "Mon Jun 22, 4:00 AM", team1: "Netherlands", team1Code: "NED", team2: "Sweden", team2Code: "SWE", stadium: "AT&T Stadium", city: "Dallas", group: "F", team1Flag: "🇳🇱", team2Flag: "🇸🇪" },
-{ id: 31, page: 3, matchNum: 31, time: "Mon Jun 22, 7:00 AM", team1: "Egypt", team1Code: "EGY", team2: "New Zealand", team2Code: "NZL", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "G", team1Flag: "🇪🇬", team2Flag: "🇳🇿" },
-{ id: 32, page: 3, matchNum: 32, time: "Tue Jun 23, 1:00 AM", team1: "Belgium", team1Code: "BEL", team2: "Iran", team2Code: "IRN", stadium: "M&T Bank Stadium", city: "Baltimore", group: "G", team1Flag: "🇧🇪", team2Flag: "🇮🇷" },
-{ id: 33, page: 3, matchNum: 33, time: "Wed Jun 24, 1:00 AM", team1: "Mexico", team1Code: "MEX", team2: "Czechia", team2Code: "CZE", stadium: "Estadio Monterrey", city: "Monterrey", group: "A", team1Flag: "🇲🇽", team2Flag: "🇨🇿" },
-{ id: 34, page: 3, matchNum: 34, time: "Wed Jun 24, 1:00 AM", team1: "South Africa", team1Code: "RSA", team2: "South Korea", team2Code: "KOR", stadium: "Estadio Guadalajara", city: "Zapopan", group: "A", team1Flag: "🇿🇦", team2Flag: "🇰🇷" },
-{ id: 35, page: 3, matchNum: 35, time: "Wed Jun 24, 5:00 AM", team1: "Canada", team1Code: "CAN", team2: "Switzerland", team2Code: "SUI", stadium: "BC Place", city: "Vancouver", group: "B", team1Flag: "🇨🇦", team2Flag: "🇨🇭" },
-{ id: 36, page: 3, matchNum: 36, time: "Wed Jun 24, 5:00 AM", team1: "Bosnia & Herzegovina", team1Code: "BIH", team2: "Qatar", team2Code: "QAT", stadium: "Toronto Stadium", city: "Toronto", group: "B", team1Flag: "🇧🇦", team2Flag: "🇶🇦" },
+      useEffect(() => {
+        const openingDate = new Date("2026-06-12T01:00:00+06:00").getTime();
+        const interval = setInterval(() => {
+          const difference = openingDate - new Date().getTime();
+          if (difference <= 0) {
+            clearInterval(interval);
+          } else {
+            setCountdown({
+              days: Math.max(0, Math.floor(difference / (1000 * 60 * 60 * 24))),
+              hours: Math.max(0, Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))),
+              mins: Math.max(0, Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))),
+              secs: Math.max(0, Math.floor((difference % (1000 * 60)) / 1000))
+            });
+          }
+        }, 1000);
+        return () => clearInterval(interval);
+      }, []);
 
-// --- PAGE 4 (Matches 37-48) ---
-{ id: 37, page: 4, matchNum: 37, time: "Thu Jun 25, 1:00 AM", team1: "Brazil", team1Code: "BRA", team2: "Scotland", team2Code: "SCO", stadium: "SoFi Stadium", city: "Los Angeles", group: "C", team1Flag: "🇧🇷", team2Flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
-{ id: 38, page: 4, matchNum: 38, time: "Thu Jun 25, 1:00 AM", team1: "Morocco", team1Code: "MAR", team2: "Haiti", team2Code: "HTI", stadium: "Levi's Stadium", city: "San Francisco", group: "C", team1Flag: "🇲🇦", team2Flag: "🇭🇹" },
-{ id: 39, page: 4, matchNum: 39, time: "Thu Jun 25, 7:00 AM", team1: "USA", team1Code: "USA", team2: "Turkey", team2Code: "TUR", stadium: "MetLife Stadium", city: "New York", group: "D", team1Flag: "🇺🇸", team2Flag: "🇹🇷" },
-{ id: 40, page: 4, matchNum: 40, time: "Thu Jun 25, 7:00 AM", team1: "Paraguay", team1Code: "PAR", team2: "Australia", team2Code: "AUS", stadium: "Lumen Field", city: "Seattle", group: "D", team1Flag: "🇵🇾", team2Flag: "🇦🇺" },
-{ id: 41, page: 4, matchNum: 41, time: "Fri Jun 26, 1:00 AM", team1: "Germany", team1Code: "GER", team2: "Ecuador", team2Code: "ECU", stadium: "NRG Stadium", city: "Houston", group: "E", team1Flag: "🇩🇪", team2Flag: "🇪🇨" },
-{ id: 42, page: 4, matchNum: 42, time: "Fri Jun 26, 1:00 AM", team1: "Curacao", team1Code: "CUW", team2: "Ivory Coast", team2Code: "CIV", stadium: "Arrowhead Stadium", city: "Kansas City", group: "E", team1Flag: "🇨🇼", team2Flag: "🇨🇮" },
-{ id: 43, page: 4, matchNum: 43, time: "Fri Jun 26, 7:00 AM", team1: "Netherlands", team1Code: "NED", team2: "Tunisia", team2Code: "TUN", stadium: "AT&T Stadium", city: "Dallas", group: "F", team1Flag: "🇳🇱", team2Flag: "🇹🇳" },
-{ id: 44, page: 4, matchNum: 44, time: "Fri Jun 26, 7:00 AM", team1: "Japan", team1Code: "JPN", team2: "Sweden", team2Code: "SWE", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "F", team1Flag: "🇯🇵", team2Flag: "🇸🇪" },
-{ id: 45, page: 4, matchNum: 45, team1: "Belgium", team1Code: "BEL", team2: "New Zealand", team2Code: "NZL", stadium: "M&T Bank Stadium", city: "Baltimore", group: "G", team1Flag: "🇧🇪", team2Flag: "🇳🇿" },
-{ id: 46, page: 4, matchNum: 46, team1: "Egypt", team1Code: "EGY", team2: "Iran", team2Code: "IRN", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "G", team1Flag: "🇪🇬", team2Flag: "🇮🇷" },
-{ id: 47, page: 4, matchNum: 47, team1: "Spain", team1Code: "ESP", team2: "Uruguay", team2Code: "URU", stadium: "Lumen Field", city: "Seattle", group: "H", team1Flag: "🇪🇸", team2Flag: "🇺🇾" },
-{ id: 48, page: 4, matchNum: 48, team1: "Cape Verde", team1Code: "CPV", team2: "Saudi Arabia", team2Code: "KSA", stadium: "Estadio Monterrey", city: "Monterrey", group: "H", team1Flag: "🇨🇻", team2Flag: "🇸🇦" },
-];
+      // Trigger icons re-renders on mutations
+      useEffect(() => {
+        if (window.lucide) { window.lucide.createIcons(); }
+      }, [searchTerm, spacingValue]);
 
-const ClubAnimatedSVG = () => (
-<svg viewBox="0 0 520 520" className="w-full h-full transition-all duration-300" xmlns="http://www.w3.org/2000/svg" id="morningsun-svg-crest">
-<defs>
-<radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
-<stop offset="0%" stopColor="#FFEAA7" stopOpacity="0.8" />
-<stop offset="100%" stopColor="#E26D27" stopOpacity="0" />
-</radialGradient>
-<linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-<stop offset="0%" stopColor="#E26D27" />
-<stop offset="40%" stopColor="#F2A134" />
-<stop offset="100%" stopColor="#FAD15B" />
-</linearGradient>
-</defs>
-<circle cx="260" cy="180" r="140" fill="url(#sunGlow)" className="animate-pulse-sun" />
-<path d="M 110,100 L 410,100 L 440,240 C 440,360 260,460 260,460 C 260,460 80,360 80,240 Z" fill="#0E2A54" stroke="#FAD15B" strokeWidth="12" strokeLinejoin="round" />
-<path d="M 122,112 L 398,112 L 424,236 C 424,344 260,438 260,438 C 260,438 96,344 96,236 Z" fill="#133863" />
-<path d="M 122,112 L 398,112 L 412,190 L 108,190 Z" fill="url(#skyGrad)" />
-<circle cx="260" cy="180" r="55" fill="#FFEAA7" className="animate-pulse-sun" />
-<circle cx="260" cy="180" r="44" fill="#FAD15B" className="animate-pulse-sun" />
-<g stroke="#FFEAA7" strokeWidth="4.5" opacity="0.8" className="animate-pulse-sun">
-<line x1="260" y1="125" x2="260" y2="70" />
-<line x1="215" y1="135" x2="175" y2="95" />
-<line x1="305" y1="135" x2="345" y2="95" />
-<line x1="195" y1="165" x2="135" y2="145" />
-<line x1="325" y1="165" x2="385" y2="145" />
-</g>
-<g className="animate-birds">
-<path d="M 165,135 Q 175,125 185,135 Q 195,125 205,135" fill="none" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" />
-<path d="M 315,140 Q 323,132 331,140 Q 339,132 347,140" fill="none" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" />
-</g>
-<path d="M 122,190 Q 190,160 260,190 Q 330,160 398,190 L 406,230 L 114,230 Z" fill="#5E8F35" />
-<path d="M 122,190 Q 190,175 260,205 Q 330,175 398,190 L 402,215 L 118,215 Z" fill="#7CAC3E" opacity="0.85" />
-<path d="M 60,230 L 460,230 L 440,290 L 80,290 Z" fill="#E5A93B" stroke="#FFEAA7" strokeWidth="4.5" strokeLinejoin="round" />
-<path d="M 80,290 L 60,230 L 40,260 Z" fill="#B37D1B" />
-<path d="M 440,290 L 460,230 L 480,260 Z" fill="#B37D1B" />
-<text x="260" y="271" fontFamily="Impact, Arial Black, sans-serif" fontSize="28" fontWeight="bold" fill="#0E2A54" textAnchor="middle" letterSpacing="1.5">
-MORNING SUN FC
-</text>
-<g className="animate-spin-ball">
-<circle cx="260" cy="375" r="54" fill="#FFFFFF" stroke="#0E2A54" strokeWidth="7" />
-<polygon points="260,357 245,372 251,391 269,391 275,372" fill="#0E2A54" />
-<line x1="260" y1="357" x2="260" y2="321" stroke="#0E2A54" strokeWidth="4" />
-<line x1="245" y1="372" x2="215" y2="355" stroke="#0E2A54" strokeWidth="4" />
-<line x1="275" y1="372" x2="305" y2="355" stroke="#0E2A54" strokeWidth="4" />
-<line x1="251" y1="391" x2="230" y2="415" stroke="#0E2A54" strokeWidth="4" />
-<line x1="269" y1="391" x2="290" y2="415" stroke="#0E2A54" strokeWidth="4" />
-<path d="M 215,355 A 54,54 0 0,0 230,415" fill="none" stroke="#0E2A54" strokeWidth="4" />
-<path d="M 305,355 A 54,54 0 0,1 290,415" fill="none" stroke="#0E2A54" strokeWidth="4" />
-<path d="M 260,321 A 54,54 0 0,0 215,355" fill="none" stroke="#0E2A54" strokeWidth="4" />
-<path d="M 260,321 A 54,54 0 0,1 305,355" fill="none" stroke="#0E2A54" strokeWidth="4" />
-</g>
-</svg>
-);
+      // ROBUST SEARCH SYSTEM
+      const filteredFixtures = fixtureData.filter((match) => {
+        const query = searchTerm.toLowerCase().trim();
+        if (!query) return true;
 
-function App() {
-const [currentPage, setCurrentPage] = useState(1);
-const [spacingValue, setSpacingValue] = useState(24);
-const [searchTerm, setSearchTerm] = useState('');
-const [selectedGroup, setSelectedGroup] = useState('ALL');
-const [predictions, setPredictions] = useState({});
-const [countdown, setCountdown] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
+        const groupName = match.group ? match.group.toLowerCase() : '';
+        const country1 = match.team1 ? match.team1.toLowerCase() : '';
+        const country2 = match.team2 ? match.team2.toLowerCase() : '';
+        const bdDate = match.time ? match.time.toLowerCase() : '';
 
-useEffect(() => {
-const openingDate = new Date("2026-06-12T01:00:00+06:00").getTime();
-const interval = setInterval(() => {
-const difference = openingDate - new Date().getTime();
-if (difference <= 0) {
-clearInterval(interval);
-} else {
-setCountdown({
-days: Math.max(0, Math.floor(difference / (1000 * 60 * 60 * 24))),
-hours: Math.max(0, Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))),
-mins: Math.max(0, Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))),
-secs: Math.max(0, Math.floor((difference % (1000 * 60)) / 1000))
-});
-}
-}, 1000);
-return () => clearInterval(interval);
-}, []);
+        return (
+          groupName.includes(query) ||
+          country1.includes(query) ||
+          country2.includes(query) ||
+          bdDate.includes(query)
+        );
+      });
 
-const executeSandboxProofPrint = () => {
-const printTab = window.open('', '_blank');
-if (!printTab) {
-alert("Popup Blocked! Please allow popups to save the PDF pamphlet.");
-return;
-}
+      const togglePredict = (matchId, teamName) => {
+        setPredictions(prev => ({
+          ...prev,
+          [matchId]: prev[matchId] === teamName ? null : teamName
+        }));
+      };
 
-const logoMarkup = document.getElementById('morningsun-svg-crest').outerHTML;
-let pagesHTML = '';
+      return (
+        <div className="flex-grow flex flex-col">
+          {/* HEADER SECTION - STATIC LOGO */}
+          <header className="sticky top-0 z-50 bg-[#0E2A54]/95 backdrop-blur-md border-b border-[#FAD15B]/30 shadow-2xl px-4 py-3.5">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <img 
+                  src="assets/logo.png" 
+                  alt="Morning Sun FC Logo" 
+                  className="h-12 w-12 object-contain"
+                />
+                <div>
+                  <h1 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FAD15B] via-yellow-400 to-amber-300 leading-tight uppercase tracking-wider">
+                    Morning Sun Football Club
+                  </h1>
+                  <p className="text-xs text-[#5E8F35] font-bold tracking-widest uppercase">Premium Fixture Desk</p>
+                </div>
+              </div>
 
-[1, 2, 3, 4].forEach(pageNo => {
-const pageMatches = fixtureData.filter(m => m.page === pageNo);
-let matchesListHTML = '';
+              <div className="flex items-center gap-2 bg-[#091a32] border border-white/10 rounded-xl px-4 py-2 shadow-inner">
+                <i data-lucide="clock" class="w-4 h-4 text-[#FAD15B]"></i>
+                <span className="text-xs font-bold text-gray-400 uppercase mr-1">Cup Kickoff:</span>
+                <div className="flex items-center gap-1 text-xs font-mono font-bold tracking-wide">
+                  <span className="text-white">{countdown.days}d</span>:
+                  <span className="text-white">{String(countdown.hours).padStart(2, '0')}h</span>:
+                  <span className="text-white">{String(countdown.mins).padStart(2, '0')}m</span>:
+                  <span className="text-amber-400">{String(countdown.secs).padStart(2, '0')}s</span>
+                </div>
+              </div>
+            </div>
+          </header>
 
-pageMatches.forEach(match => {
-matchesListHTML += `
-<div class="match-row">
-<div class="match-num-badge">
-<span class="match-num-lbl">Match</span>
-<span class="match-num-val">${match.matchNum}</span>
-</div>
-<div class="matchup-teams">
-<div class="team-side team-right">
-<span class="team-name">${match.team1}</span>
-<span class="team-flag">${match.team1Flag}</span>
-</div>
-<div class="vs-badge">VS</div>
-<div class="team-side team-left">
-<span class="team-flag">${match.team2Flag}</span>
-<span class="team-name">${match.team2}</span>
-</div>
-</div>
-<div class="match-meta">
-<div class="match-time">${match.time}</div>
-<div class="match-venue">${match.stadium}</div>
-</div>
-<div class="grp-badge">GRP ${match.group}</div>
-</div>
-`;
-});
+          <main className="flex-grow max-w-7xl w-full mx-auto px-4 py-8 flex flex-col gap-8">
+            
+            {/* GROUPS HERO BANNER - ANIMATED VIDEO LOOP */}
+            <section className="bg-gradient-to-br from-[#0E2A54] via-[#091a32] to-[#061021] border border-[#FAD15B]/20 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8">
+              <div className="space-y-4 max-w-3xl text-center lg:text-left">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-extrabold bg-[#E5A93B]/10 text-[#FAD15B] border border-[#E5A93B]/20 uppercase tracking-widest">
+                  FIFA World Cup 2026 Scheduling Desk
+                </span>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight uppercase tracking-tight">
+                  FIFA World Cup 2026 <span className="text-[#FAD15B]">Groups & Fixtures</span>
+                </h2>
+                <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+                  Track group stage match schedules customized to Dhaka Time and check instant team profiles. Adjust your card margins smoothly below.
+                </p>
 
-pagesHTML += `
-<div class="print-page">
-<div class="top-colored-strip"></div>
-<header class="page-header">
-<div class="brand-holder">
-<div class="placeholder-logo">${logoMarkup}</div>
-<div class="text-details">
-<h2 class="main-title">FIFA World Cup 2026 Group Stage Matches Fixture</h2>
-<p class="subtitle">Presented by <strong>Morning Sun Football Club</strong></p>
-</div>
-</div>
-<div class="page-count-badge">PAGE ${pageNo} OF 4</div>
-</header>
-<div class="matches-container">
-${matchesListHTML}
-</div>
-<footer class="page-footer">
-<div class="footer-club-brand">
-<div class="brand-logo-small">${logoMarkup}</div>
-<div>
-<span class="brand-text">Morning Sun Football Club</span>
-<span class="brand-sub">Official Tournament Companion</span>
-</div>
-</div>
-<div class="footer-details">
-<p>📍 Wapda Colony, Jatrabari, Dhaka-1236, Bangladesh</p>
-<p>🌐 www.morningsunfootball.club &nbsp;|&nbsp; 👥 fb.com/MorningSunFC</p>
-</div>
-</footer>
-</div>
-`;
-});
+                <div className="bg-[#091a32]/80 border border-white/5 rounded-xl p-4 inline-flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                  <div className="flex items-center gap-2">
+                    <i data-lucide="sliders" class="w-4 h-4 text-[#FAD15B]"></i>
+                    <span className="text-xs font-bold text-gray-300 uppercase tracking-wide">Adjust Spacing:</span>
+                  </div>
+                  <input 
+                    type="range" 
+                    min="12" 
+                    max="40" 
+                    value={spacingValue} 
+                    onChange={(e) => setSpacingValue(parseInt(e.target.value))}
+                    className="w-40 accent-[#E5A93B] cursor-pointer"
+                  />
+                  <span className="text-xs font-mono font-bold text-[#FAD15B] bg-[#0E2A54] px-2 py-1 rounded">
+                    {spacingValue}px
+                  </span>
+                </div>
+              </div>
 
-printTab.document.write(`
-<html>
-<head>
-<title>FIFA World Cup 2026 Fixture - Morning Sun FC</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap');
-body {
-font-family: 'Plus Jakarta Sans', sans-serif;
-margin: 0;
-padding: 0;
-background-color: #f3f4f6;
-color: #1f2937;
--webkit-print-color-adjust: exact !important;
-print-color-adjust: exact !important;
-}
-.print-page {
-background-color: white;
-width: 210mm;
-height: 297mm;
-box-sizing: border-box;
-padding: 20mm;
-margin: 20px auto;
-box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-page-break-after: always;
-position: relative;
-}
-.top-colored-strip {
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-height: 6px;
-background: linear-gradient(to right, #0E2A54, #E5A93B, #5E8F35);
-}
-.page-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-border-bottom: 2px solid #0E2A54;
-padding-bottom: 18px;
-margin-top: 15px;
-gap: 25px;
-}
-.brand-holder {
-display: flex;
-align-items: center;
-gap: 16px;
-flex-grow: 1;
-}
-.placeholder-logo {
-width: 70px;
-height: 70px;
-display: flex;
-align-items: center;
-justify-content: center;
-border-radius: 50%;
-overflow: hidden;
-background: #0E2A54;
-border: 1.5px solid #FAD15B;
-flex-shrink: 0;
-}
-.placeholder-logo svg {
-width: 100%;
-height: 100%;
-object-fit: contain;
-}
-.text-details {
-flex-grow: 1;
-}
-.main-title {
-font-size: 15px;
-font-weight: 900;
-text-transform: uppercase;
-color: #0E2A54;
-margin: 0;
-line-height: 1.3;
-}
-.subtitle {
-font-size: 10px;
-color: #4b5563;
-margin: 5px 0 0 0;
-text-transform: uppercase;
-}
-.page-count-badge {
-background-color: #0E2A54;
-color: #FAD15B;
-font-size: 10px;
-font-weight: 800;
-padding: 7px 14px;
-border-radius: 8px;
-white-space: nowrap;
-border: 1px solid #FAD15B;
-}
-.matches-container {
-flex-grow: 1;
-display: flex;
-flex-direction: column;
-justify-content: space-around;
-margin: 20px 0;
-gap: 8px;
-}
-.match-row {
-border: 1px solid #e5e7eb;
-border-radius: 12px;
-padding: 10px 12px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-font-size: 11.5px;
-}
-.match-num-badge {
-background: #0E2A54;
-color: white;
-border-radius: 8px;
-width: 44px;
-padding: 5px 0;
-display: flex;
-flex-direction: column;
-align-items: center;
-font-weight: 700;
-flex-shrink: 0;
-}
-.match-num-lbl {
-font-size: 8px;
-text-transform: uppercase;
-color: #FAD15B;
-}
-.match-num-val {
-font-size: 12px;
-}
-.matchup-teams {
-flex-grow: 1;
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 0 12px;
-}
-.team-side {
-display: flex;
-align-items: center;
-gap: 8px;
-width: 38%;
-}
-.team-right {
-justify-content: flex-end;
-text-align: right;
-}
-.team-left {
-justify-content: flex-start;
-text-align: left;
-}
-.team-name {
-font-weight: 850;
-color: #111827;
-font-size: 11px;
-text-transform: uppercase;
-}
-.team-flag {
-font-size: 20px;
-}
-.vs-badge {
-background: #E5A93B;
-color: white;
-font-size: 8px;
-font-weight: 900;
-padding: 3px 7px;
-border-radius: 6px;
-}
-.match-meta {
-width: 22%;
-text-align: right;
-flex-shrink: 0;
-}
-.match-time {
-font-weight: 800;
-color: #0E2A54;
-font-size: 10.5px;
-}
-.match-venue {
-font-size: 9px;
-color: #6b7280;
-margin-top: 2px;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
-}
-.grp-badge {
-background-color: rgba(94, 143, 53, 0.1);
-border: 1px solid rgba(94, 143, 53, 0.2);
-color: #5E8F35;
-border-radius: 20px;
-padding: 3px 9px;
-font-weight: 800;
-font-size: 9px;
-text-transform: uppercase;
-flex-shrink: 0;
-}
-.page-footer {
-border-top: 2px solid #E5A93B;
-padding-top: 15px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.footer-club-brand {
-display: flex;
-align-items: center;
-gap: 10px;
-}
-.brand-logo-small {
-width: 36px;
-height: 36px;
-border-radius: 50%;
-overflow: hidden;
-background: #0E2A54;
-border: 1px solid #FAD15B;
-}
-.brand-logo-small svg {
-width: 100%;
-height: 100%;
-object-fit: contain;
-}
-.brand-text {
-font-size: 11px;
-font-weight: 900;
-color: #111827;
-text-transform: uppercase;
-display: block;
-}
-.brand-sub {
-font-size: 8px;
-color: #6b7280;
-text-transform: uppercase;
-margin-top: 1px;
-}
-.footer-details {
-text-align: right;
-font-size: 9px;
-color: #4b5563;
-line-height: 1.4;
-}
-@media print {
-body {
-background-color: white;
-}
-.print-page {
-box-shadow: none;
-margin: 0;
-page-break-after: always;
-height: 100vh;
-}
-}
-</style>
-</head>
-<body>
-${pagesHTML}
-<script>
-window.onload = function() {
-setTimeout(function() {
-window.print();
-}, 500);
-};
-<\/script>
+              {/* Animated Studio Asset Container */}
+              <div className="bg-[#091a32] border border-[#FAD15B]/20 rounded-2xl p-5 shadow-2xl flex flex-col items-center text-center w-64 shrink-0">
+                <div className="relative w-32 h-32 rounded-xl overflow-hidden bg-black border-2 border-[#FAD15B] flex items-center justify-center">
+                  <video
+                    src="assets/animated-showcase.mp4" 
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <h4 className="text-xs font-black text-white uppercase mt-4 tracking-wide">Studio Broadcast Loop</h4>
+              </div>
+            </section>
+
+            {/* ROBUST SEARCH PARAMETERS */}
+            <section className="bg-[#0b1b33] border border-white/5 rounded-xl p-6 shadow-xl space-y-4">
+              <div className="relative w-full">
+                <i data-lucide="search" class="absolute left-4 top-3.5 w-5 h-5 text-gray-400"></i>
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search by Group (e.g., Group A), Country (e.g., Brazil), or BD Date (e.g., Jun 12)..."
+                  className="w-full bg-[#061021] text-white pl-12 pr-4 py-3.5 rounded-xl border border-gray-700/80 focus:outline-none focus:border-[#E5A93B] text-sm font-medium shadow-inner"
+                />
+              </div>
+              <div className="flex flex-wrap gap-2 items-center text-xs font-bold text-gray-400 uppercase tracking-wider">
+                <span>Try Quick Queries:</span>
+                <button onClick={() => setSearchTerm('Group A')} className="text-[#FAD15B] hover:underline bg-[#061021] px-2.5 py-1 rounded border border-white/5">"Group A"</button>
+                <button onClick={() => setSearchTerm('Brazil')} className="text-[#FAD15B] hover:underline bg-[#061021] px-2.5 py-1 rounded border border-white/5">"Brazil"</button>
+                <button onClick={() => setSearchTerm('Jun 13')} className="text-[#FAD15B] hover:underline bg-[#061021] px-2.5 py-1 rounded border border-white/5">"Jun 13"</button>
+              </div>
+            </section>
+
+            <div className="flex items-center justify-between border-b border-gray-880 pb-2">
+              <p className="text-xs uppercase text-gray-400 tracking-widest font-black">Match Matrix Layout</p>
+              <p className="text-xs text-gray-400">
+                Matches found: <span className="text-[#FAD15B] font-bold">{filteredFixtures.length}</span>
+              </p>
+            </div>
+
+            {/* MAIN FIXTURE RENDERING GRID (ALL SHOWN ON A SINGLE PAGE) */}
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredFixtures.length > 0 ? (
+                filteredFixtures.map((match) => (
+                  <div 
+                    key={match.id}
+                    className="bg-gradient-to-b from-[#0b1b33] to-[#061021] border border-white/5 hover:border-[#FAD15B]/40 rounded-2xl transition-all duration-300 shadow-xl overflow-hidden relative"
+                    style={{ padding: `${spacingValue}px` }}
+                  >
+                    <div className="flex items-center justify-between border-b border-gray-800 pb-3 mb-4">
+                      <div className="flex items-center gap-2">
+                        <span className="w-7 h-7 rounded-lg bg-[#112f57] border border-[#FAD15B]/30 flex items-center justify-center text-xs font-black text-[#FAD15B] font-mono">
+                          {match.matchNum}
+                        </span>
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Match</span>
+                      </div>
+                      <span className="px-3 py-1 rounded-full text-[10px] font-black bg-[#E5A93B]/10 text-[#FAD15B] border border-[#E5A93B]/20 uppercase">
+                        {match.group}
+                      </span>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div 
+                        onClick={() => togglePredict(match.id, match.team1)}
+                        className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer border transition-all ${
+                          predictions[match.id] === match.team1 ? 'bg-[#5E8F35]/15 border-[#5E8F35]' : 'bg-[#091a32]/40 border-transparent hover:bg-[#091a32]'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-3xl filter drop-shadow-md">{match.team1Flag}</span>
+                          <div>
+                            <p className="font-extrabold text-sm text-white uppercase tracking-wide">{match.team1}</p>
+                            <p className="text-[10px] text-gray-400 font-bold uppercase">{match.team1Code}</p>
+                          </div>
+                        </div>
+                        {predictions[match.id] === match.team1 && <i data-lucide="check-circle" class="w-4 h-4 text-[#5E8F35]"></i>}
+                      </div>
+
+                      <div className="flex items-center justify-center gap-4 text-xs font-bold text-gray-500 my-1 uppercase tracking-widest">
+                        <div className="h-[1px] bg-gray-800 flex-grow" />
+                        <span>VS</span>
+                        <div className="h-[1px] bg-gray-800 flex-grow" />
+                      </div>
+
+                      <div 
+                        onClick={() => togglePredict(match.id, match.team2)}
+                        className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer border transition-all ${
+                          predictions[match.id] === match.team2 ? 'bg-[#5E8F35]/15 border-[#5E8F35]' : 'bg-[#091a32]/40 border-transparent hover:bg-[#091a32]'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-3xl filter drop-shadow-md">{match.team2Flag}</span>
+                          <div>
+                            <p className="font-extrabold text-sm text-white uppercase tracking-wide">{match.team2}</p>
+                            <p className="text-[10px] text-gray-400 font-bold uppercase">{match.team2Code}</p>
+                          </div>
+                        </div>
+                        {predictions[match.id] === match.team2 && <i data-lucide="check-circle" class="w-4 h-4 text-[#5E8F35]"></i>}
+                      </div>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-gray-800/80 flex flex-col gap-2 text-xs">
+                      <div className="flex items-center gap-1.5 text-gray-300">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-[#FAD15B]"></i>
+                        <span className="font-extrabold text-[#FAD15B]">{match.time}</span>
+                        <span className="bg-[#112f57] text-blue-300 px-1 rounded text-[9px] font-bold">BD Time</span>
+                      </div>
+                      <div className="flex items-start gap-1.5 text-gray-400">
+                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-green-400 shrink-0 mt-0.5"></i>
+                        <span className="leading-tight text-[11px]">{match.stadium}, <strong class="text-gray-200">{match.city}</strong></span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-full text-center py-16 bg-[#0b1b33] border border-white/5 rounded-2xl">
+                  <i data-lucide="alert-circle" class="w-8 h-8 text-amber-400 mx-auto mb-2"></i>
+                  <p className="text-sm font-bold text-gray-300">No match records matched your query parameters.</p>
+                </div>
+              )}
+            </section>
+
+            {/* FOOTER SECTION - STATIC LOGO */}
+            <footer className="mt-8 bg-gradient-to-r from-[#0E2A54] to-[#112f57] border border-[#FAD15B]/30 rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-2xl">
+              <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+                <img 
+                  src="assets/logo.png" 
+                  alt="Morning Sun FC Logo" 
+                  className="h-14 w-14 object-contain"
+                />
+                <div>
+                  <p className="font-black text-lg text-white uppercase tracking-wider">Morning Sun Football Club</p>
+                  <p className="text-xs text-gray-300 mt-1 flex items-center justify-center sm:justify-start gap-1">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-green-400"></i>
+                    Wapda Colony, Jatrabari, Dhaka-1236, Bangladesh
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 items-center w-full sm:w-auto">
+                <a 
+                  href="https://www.morningsunfootball.club/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#061021] text-white font-extrabold text-xs px-5 py-3 rounded-xl border border-gray-700 hover:border-[#FAD15B] transition-all w-full sm:w-auto"
+                >
+                  <i data-lucide="globe" class="w-4 h-4 text-[#FAD15B]"></i>
+                  <span>Visit Website</span>
+                </a>
+                <a 
+                  href="https://www.facebook.com/MorningSunFC" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#1877F2] text-white font-extrabold text-xs px-5 py-3 rounded-xl hover:bg-blue-600 transition-all w-full sm:w-auto"
+                >
+                  <i data-lucide="facebook" class="w-4 h-4 text-white"></i>
+                  <span>Facebook Page</span>
+                </a>
+              </div>
+            </footer>
+          </main>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('app'));
+    setTimeout(() => { if (window.lucide) { window.lucide.createIcons(); } }, 200);
+  </script>
 </body>
 </html>
-`);
-printTab.document.close();
-};
-
-const filteredMatches = fixtureData.filter(match => {
-const term = searchTerm.toLowerCase();
-return (
-match.team1.toLowerCase().includes(term) ||
-match.team2.toLowerCase().includes(term) ||
-match.city.toLowerCase().includes(term) ||
-match.stadium.toLowerCase().includes(term) ||
-match.group.toLowerCase().includes(term)
-) && (selectedGroup === 'ALL' || match.group === selectedGroup);
-});
-
-const interactivePageMatches = filteredMatches.filter(m => m.page === currentPage);
-
-const togglePredict = (matchId, teamName) => {
-setPredictions(prev => ({
-...prev,
-[matchId]: prev[matchId] === teamName ? null : teamName
-}));
-};
-
-return (
-<div className="flex-grow flex flex-col">
-<header className="sticky top-0 z-50 bg-[#0E2A54]/95 backdrop-blur-md border-b border-[#FAD15B]/30 shadow-2xl px-4 py-3.5">
-<div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-<div className="flex items-center gap-3">
-<div className="w-14 h-14 bg-[#112f57] rounded-full p-0.5 border-2 border-[#FAD15B] shadow-lg flex items-center justify-center shrink-0 overflow-hidden">
-<ClubAnimatedSVG />
-</div>
-<div>
-<h1 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FAD15B] via-yellow-400 to-amber-300 leading-tight uppercase tracking-wider">
-Morning Sun Football Club
-</h1>
-<p className="text-xs text-[#5E8F35] font-bold tracking-widest uppercase">Premium Fixture Desk</p>
-</div>
-</div>
-
-<div className="flex items-center gap-2 bg-[#091a32] border border-white/10 rounded-xl px-4 py-2 shadow-inner">
-<i data-lucide="clock" class="w-4 h-4 text-[#FAD15B] animate-pulse"></i>
-<span className="text-xs font-bold text-gray-400 uppercase mr-1">Cup Kickoff:</span>
-<div className="flex items-center gap-1 text-xs font-mono font-bold tracking-wide">
-<span className="text-white">{countdown.days}d</span>:
-<span className="text-white">{String(countdown.hours).padStart(2, '0')}h</span>:
-<span className="text-white">{String(countdown.mins).padStart(2, '0')}m</span>:
-<span className="text-amber-400">{String(countdown.secs).padStart(2, '0')}s</span>
-</div>
-</div>
-
-<button
-onClick={executeSandboxProofPrint}
-className="flex items-center gap-2 bg-gradient-to-r from-[#E5A93B] to-[#FAD15B] hover:brightness-110 active:scale-95 text-[#0E2A54] px-5 py-2.5 rounded-xl font-extrabold text-xs transition-all shadow-md uppercase tracking-wider"
->
-<i data-lucide="printer" class="w-4 h-4"></i>
-Save 4-Page PDF
-</button>
-</div>
-</header>
-
-<main className="flex-grow max-w-7xl w-full mx-auto px-4 py-8 flex flex-col gap-8">
-<div className="bg-[#112f57]/80 border border-[#FAD15B]/30 rounded-2xl p-4 flex items-start gap-3.5 text-xs text-gray-200">
-<i data-lucide="info" class="w-5 h-5 text-[#FAD15B] shrink-0 mt-0.5"></i>
-<div>
-<p className="font-bold text-[#FAD15B] uppercase tracking-wider">Mobile Download Notice</p>
-<p className="mt-1 leading-relaxed">
-Tap the gold <strong>"Save 4-Page PDF"</strong> button above. A dedicated printable window opens bypassing iframe restrictions, allowing you to easily save or print the booklet with your full animated club crest on iOS and Android.
-</p>
-</div>
-</div>
-
-<section className="bg-gradient-to-br from-[#0E2A54] via-[#091a32] to-[#061021] border border-[#FAD15B]/20 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8">
-<div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-[#FAD15B]/5 rounded-full blur-2xl pointer-events-none" />
-
-<div className="space-y-4 max-w-3xl text-center lg:text-left">
-<span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-extrabold bg-[#E5A93B]/10 text-[#FAD15B] border border-[#E5A93B]/20 uppercase tracking-widest">
-FIFA World Cup 2026 Scheduling Desk
-</span>
-<h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight uppercase tracking-tight">
-FIFA World Cup 2026 <span className="text-[#FAD15B]">Groups & Fixtures</span>
-</h2>
-<p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-Stay updated on the full roster of 48 group stage matches. We have formatted this tournament companion into a clean, highly professional printable catalog of exactly 4 pages, accommodating 12 matches per sheet. Customize your card margins with the padding slider below!
-</p>
-
-<div className="bg-[#091a32]/80 border border-white/5 rounded-xl p-4 inline-flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-<div className="flex items-center gap-2">
-<i data-lucide="sliders" class="w-4 h-4 text-[#FAD15B]"></i>
-<span className="text-xs font-bold text-gray-300 uppercase tracking-wide">Adjust Spacing:</span>
-</div>
-<input
-type="range"
-min="12"
-max="44"
-value={spacingValue}
-onChange={(e) => setSpacingValue(parseInt(e.target.value))}
-className="w-40 accent-[#E5A93B] cursor-pointer"
-/>
-<span className="text-xs font-mono font-bold text-[#FAD15B] bg-[#0E2A54] px-2 py-1 rounded">
-{spacingValue}px Padding
-</span>
-</div>
-</div>
-
-<div className="bg-[#091a32] border border-[#FAD15B]/20 rounded-2xl p-5 shadow-2xl flex flex-col items-center text-center w-72 shrink-0">
-<div className="relative w-36 h-36">
-<div className="absolute inset-0 bg-[#FAD15B]/10 rounded-full blur-lg opacity-75" />
-<div className="relative w-36 h-36 bg-[#112f57] rounded-full p-1 border-2 border-[#FAD15B] flex items-center justify-center overflow-hidden">
-<ClubAnimatedSVG />
-</div>
-</div>
-<h4 className="text-sm font-black text-white uppercase mt-4 tracking-wide">
-Morning Sun Football Club
-</h4>
-<p className="text-[10px] text-gray-400 mt-1">Official Animated Crest</p>
-</div>
-</section>
-
-<section className="bg-[#0b1b33] border border-white/5 rounded-xl p-4 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-4">
-<div className="relative w-full lg:w-96">
-<i data-lucide="search" class="absolute left-3.5 top-3 w-4 h-4 text-gray-400"></i>
-<input
-type="text"
-value={searchTerm}
-onChange={(e) => setSearchTerm(e.target.value)}
-placeholder="Search teams, groups, cities, or stadium..."
-className="w-full bg-[#061021] text-white pl-10 pr-4 py-2.5 rounded-xl border border-gray-700/80 focus:outline-none focus:border-[#E5A93B] text-sm"
-/>
-</div>
-
-<div className="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-start lg:justify-end">
-<i data-lucide="filter" class="w-4 h-4 text-[#FAD15B] mr-1"></i>
-<button
-onClick={() => setSelectedGroup('ALL')}
-className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-selectedGroup === 'ALL'
-? 'bg-[#E5A93B] text-[#0E2A54]'
-: 'bg-[#061021] text-gray-300 hover:text-white border border-gray-700/60'
-}`}
->
-All Groups
-</button>
-{['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'].map(g => (
-<button
-key={g}
-onClick={() => setSelectedGroup(g)}
-className={`w-8 h-8 rounded-lg text-xs font-extrabold flex items-center justify-center transition-all ${
-selectedGroup === g
-? 'bg-[#E5A93B] text-[#0E2A54]'
-: 'bg-[#061021] text-gray-300 hover:text-white border border-gray-700/60'
-}`}
->
-{g}
-</button>
-))}
-</div>
-</section>
-
-<section className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-gray-800 pb-4">
-<div className="flex items-center gap-2">
-<span className="text-xs font-bold uppercase text-gray-400 tracking-wider">Pamphlet Page Select:</span>
-<div className="flex rounded-lg overflow-hidden bg-[#091a32] border border-gray-700">
-{[1, 2, 3, 4].map(pNum => (
-<button
-key={pNum}
-onClick={() => setCurrentPage(pNum)}
-className={`px-4 py-2.5 text-xs font-bold transition-all ${
-currentPage === pNum
-? 'bg-[#112f57] text-white border-b-2 border-b-[#FAD15B]'
-: 'text-gray-400 hover:text-white hover:bg-[#061021]'
-}`}
->
-Page {pNum}
-</button>
-))}
-</div>
-</div>
-<p className="text-xs text-gray-400">
-Showing <span className="text-[#FAD15B] font-bold">{interactivePageMatches.length}</span> of {filteredMatches.length} matches
-</p>
-</section>
-
-<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-{interactivePageMatches.map((match) => (
-<div
-key={match.id}
-className="bg-gradient-to-b from-[#0b1b33] to-[#061021] border border-white/5 hover:border-[#FAD15B]/40 rounded-2xl transition-all duration-300 shadow-xl overflow-hidden relative group"
-style={{ padding: `${spacingValue}px` }}
->
-<div className="flex items-center justify-between border-b border-gray-800 pb-3 mb-4">
-<div className="flex items-center gap-2">
-<span className="w-7 h-7 rounded-lg bg-[#112f57] border border-[#FAD15B]/30 flex items-center justify-center text-xs font-black text-[#FAD15B] font-mono">
-{match.matchNum}
-</span>
-<span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Match</span>
-</div>
-<span className="px-3 py-1 rounded-full text-[10px] font-black bg-[#E5A93B]/10 text-[#FAD15B] border border-[#E5A93B]/20 uppercase">
-Group {match.group}
-</span>
-</div>
-
-<div className="space-y-3">
-<div
-onClick={() => togglePredict(match.id, match.team1)}
-className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer border transition-all ${
-predictions[match.id] === match.team1
-? 'bg-[#5E8F35]/15 border-[#5E8F35]'
-: 'bg-[#091a32]/40 border-transparent hover:bg-[#091a32]'
-}`}
->
-<div className="flex items-center gap-3">
-<span className="text-3xl filter drop-shadow-md">{match.team1Flag}</span>
-<div>
-<p className="font-extrabold text-sm text-white tracking-wide uppercase">{match.team1}</p>
-<p className="text-[10px] text-gray-400 font-bold uppercase">{match.team1Code}</p>
-</div>
-</div>
-{predictions[match.id] === match.team1 && (
-<i data-lucide="check-circle" class="w-4 h-4 text-[#5E8F35]"></i>
-)}
-</div>
-
-<div className="flex items-center justify-center gap-4 text-xs font-bold text-gray-500 my-1 uppercase tracking-widest">
-<div className="h-[1px] bg-gray-800 flex-grow" />
-<span>VS</span>
-<div className="h-[1px] bg-gray-800 flex-grow" />
-</div>
-
-<div
-onClick={() => togglePredict(match.id, match.team2)}
-className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer border transition-all ${
-predictions[match.id] === match.team2
-? 'bg-[#5E8F35]/15 border-[#5E8F35]'
-: 'bg-[#091a32]/40 border-transparent hover:bg-[#091a32]'
-}`}
->
-<div className="flex items-center gap-3">
-<span className="text-3xl filter drop-shadow-md">{match.team2Flag}</span>
-<div>
-<p className="font-extrabold text-sm text-white tracking-wide uppercase">{match.team2}</p>
-<p className="text-[10px] text-gray-400 font-bold uppercase">{match.team2Code}</p>
-</div>
-</div>
-{predictions[match.id] === match.team2 && (
-<i data-lucide="check-circle" class="w-4 h-4 text-[#5E8F35]"></i>
-)}
-</div>
-</div>
-
-<div className="mt-4 pt-3 border-t border-gray-800/80 flex flex-col gap-2 text-xs">
-<div className="flex items-center gap-1.5 text-gray-300">
-<i data-lucide="calendar" class="w-3.5 h-3.5 text-[#FAD15B]"></i>
-<span className="font-extrabold text-[#FAD15B]">{match.time}</span>
-<span className="bg-[#112f57] text-blue-300 px-1 py-0.1 rounded text-[9px] font-bold">Dhaka Time</span>
-</div>
-
-<div className="flex items-start gap-1.5 text-gray-400">
-<i data-lucide="map-pin" class="w-3.5 h-3.5 text-green-400 shrink-0 mt-0.5"></i>
-<span className="leading-tight text-[11px]">
-{match.stadium}, <strong className="text-gray-200">{match.city}</strong>
-</span>
-</div>
-</div>
-</div>
-))}
-</section>
-
-<footer className="mt-8 bg-gradient-to-r from-[#0E2A54] to-[#112f57] border border-[#FAD15B]/30 rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-2xl">
-<div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-<div className="w-16 h-16 bg-[#0E2A54] rounded-full p-0.5 border border-[#FAD15B]/40 flex items-center justify-center overflow-hidden">
-<ClubAnimatedSVG />
-</div>
-<div>
-<p className="font-black text-lg text-white uppercase tracking-wider">Morning Sun Football Club</p>
-<p className="text-xs text-gray-300 mt-1 flex items-center justify-center sm:justify-start gap-1">
-<i data-lucide="map-pin" class="w-4 h-4 text-green-400 inline"></i>
-Wapda Colony, Jatrabari, Dhaka-1236, Bangladesh
-</p>
-</div>
-</div>
-
-<div className="flex flex-col sm:flex-row gap-3 items-center w-full sm:w-auto">
-<a
-href="https://www.morningsunfootball.club/"
-target="_blank"
-rel="noopener noreferrer"
-className="flex items-center justify-center gap-2 bg-[#061021] text-white font-extrabold text-xs px-5 py-3 rounded-xl border border-gray-700 hover:border-[#FAD15B] transition-all w-full sm:w-auto"
->
-<i data-lucide="globe" class="w-4 h-4 text-[#FAD15B]"></i>
-<span>Visit Website</span>
-</a>
-
-<a
-href="https://www.facebook.com/MorningSunFC"
-target="_blank"
-rel="noopener noreferrer"
-className="flex items-center justify-center gap-2 bg-[#1877F2] text-white font-extrabold text-xs px-5 py-3 rounded-xl hover:bg-blue-600 transition-all w-full sm:w-auto"
->
-<i data-lucide="facebook" class="w-4 h-4 text-white"></i>
-<span>Facebook Page</span>
-</a>
-</div>
-</footer>
-</main>
-</div>
-);
-}
-
-ReactDOM.render(<App />, document.getElementById('app'));
-
-// Initialize Lucide icons on page load and updates
-setTimeout(() => { lucide.createIcons(); }, 100);
-</script>
-</body>
-</html>
-
-```
