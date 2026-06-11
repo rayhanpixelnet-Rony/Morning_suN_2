@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FIFA World Cup 2026 Fixtures - Morning Sun Football Club</title>
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Plus Jakarta Sans Font -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;600;800;900&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     body {
@@ -28,8 +31,10 @@
 </head>
 <body class="bg-[#061021] text-gray-100 min-h-screen flex flex-col antialiased">
 
+  <!-- Interactive App Mount Root -->
   <div id="app" class="flex-grow flex flex-col"></div>
 
+  <!-- React Dependencies via CDN -->
   <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -38,54 +43,81 @@
     const { useState, useEffect } = React;
 
     const fixtureData = [
+      // MATCHDAY 1 & 2 (MATCHES 1 - 48)
       { id: 1, matchNum: 1, time: "Fri Jun 12, 1:00 AM", team1: "Mexico", team1Code: "MEX", team2: "South Africa", team2Code: "RSA", stadium: "Mexico City Stadium", city: "Mexico City", group: "Group A", team1Flag: "🇲🇽", team2Flag: "🇿🇦" },
       { id: 2, matchNum: 2, time: "Fri Jun 12, 8:00 AM", team1: "South Korea", team1Code: "KOR", team2: "Czechia", team2Code: "CZE", stadium: "Estadio Guadalajara", city: "Zapopan", group: "Group A", team1Flag: "🇰🇷", team2Flag: "🇨🇿" },
       { id: 3, matchNum: 3, time: "Sat Jun 13, 1:00 AM", team1: "Canada", team1Code: "CAN", team2: "Bosnia & Herzegovina", team2Code: "BIH", stadium: "Toronto Stadium", city: "Toronto", group: "Group B", team1Flag: "🇨🇦", team2Flag: "🇧🇦" },
       { id: 4, matchNum: 4, time: "Sat Jun 13, 7:00 AM", team1: "USA", team1Code: "USA", team2: "Paraguay", team2Code: "PAR", stadium: "Los Angeles Stadium", city: "Inglewood", group: "Group D", team1Flag: "🇺🇸", team2Flag: "🇵🇾" },
-      { id: 5, matchNum: 5, time: "Sun Jun 14, 4:00 AM", team1: "Brazil", team1Code: "BRA", team2: "Morocco", team2Code: "MAR", stadium: "New York New Jersey Stadium", city: "New York", group: "Group C", team1Flag: "🇧🇷", team2Flag: "🇲🇦" },
-      { id: 6, matchNum: 6, time: "Sun Jun 14, 7:00 AM", team1: "Haiti", team1Code: "HTI", team2: "Scotland", team2Code: "SCO", stadium: "Boston Stadium", city: "Boston", group: "Group C", team1Flag: "🇭🇹", team2Flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
-      { id: 7, matchNum: 7, time: "Sun Jun 14, 8:00 AM", team1: "Australia", team1Code: "AUS", team2: "Turkey", team2Code: "TUR", stadium: "Arrowhead Stadium", city: "Kansas City", group: "Group D", team1Flag: "🇦🇺", team2Flag: "🇹🇷" },
-      { id: 8, matchNum: 8, time: "Mon Jun 15, 1:00 AM", team1: "Germany", team1Code: "GER", team2: "Curacao", team2Code: "CUW", stadium: "NRG Stadium", city: "Houston", group: "Group E", team1Flag: "🇩🇪", team2Flag: "🇨🇼" },
-      { id: 9, matchNum: 9, time: "Mon Jun 15, 4:00 AM", team1: "Ivory Coast", team1Code: "CIV", team2: "Ecuador", team2Code: "ECU", stadium: "Levi's Stadium", city: "San Francisco", group: "Group E", team1Flag: "🇨🇮", team2Flag: "🇪🇨" },
-      { id: 10, matchNum: 10, time: "Mon Jun 15, 7:00 AM", team1: "Netherlands", team1Code: "NED", team2: "Japan", team2Code: "JPN", stadium: "AT&T Stadium", city: "Dallas", group: "Group F", team1Flag: "🇳🇱", team2Flag: "🇯🇵" },
-      { id: 11, matchNum: 11, time: "Tue Jun 16, 1:00 AM", team1: "Sweden", team1Code: "SWE", team2: "Tunisia", team2Code: "TUN", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "Group F", team1Flag: "🇸🇪", team2Flag: "🇹🇳" },
-      { id: 12, matchNum: 12, time: "Tue Jun 16, 4:00 AM", team1: "Belgium", team1Code: "BEL", team2: "Egypt", team2Code: "EGY", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "Group G", team1Flag: "🇧🇪", team2Flag: "🇪🇬" },
-      { id: 13, matchNum: 13, time: "Tue Jun 16, 7:00 AM", team1: "Iran", team1Code: "IRN", team2: "New Zealand", team2Code: "NZL", stadium: "M&T Bank Stadium", city: "Baltimore", group: "Group G", team1Flag: "🇮🇷", team2Flag: "🇳🇿" },
-      { id: 14, matchNum: 14, time: "Wed Jun 17, 1:00 AM", team1: "Spain", team1Code: "ESP", team2: "Cape Verde", team2Code: "CPV", stadium: "Lumen Field", city: "Seattle", group: "Group H", team1Flag: "🇪🇸", team2Flag: "🇨🇻" },
-      { id: 15, matchNum: 15, time: "Wed Jun 17, 4:00 AM", team1: "Saudi Arabia", team1Code: "KSA", team2: "Uruguay", team2Code: "URU", stadium: "Estadio Monterrey", city: "Monterrey", group: "Group H", team1Flag: "🇸🇦", team2Flag: "🇺🇾" },
-      { id: 16, matchNum: 16, time: "Wed Jun 17, 8:00 AM", team1: "England", team1Code: "ENG", team2: "Croatia", team2Code: "CRO", stadium: "AT&T Stadium", city: "Dallas", group: "Group L", team1Flag: "🏴\u200d󠁢󠁥󠁮󠁧󠁿", team2Flag: "🇭🇷" },
-{ id: 17, matchNum: 17, time: "Thu Jun 18, 2:00 AM", team1: "Ghana", team1Code: "GHA", team2: "Panama", team2Code: "PAN", stadium: "Toronto Stadium", city: "Toronto", group: "Group L", team1Flag: "🇬🇭", team2Flag: "🇵🇦" },
-      { id: 18, matchNum: 18, time: "Thu Jun 18, 5:00 AM", team1: "Uzbekistan", team1Code: "UZB", team2: "Colombia", team2Code: "COL", stadium: "Mexico City Stadium", city: "Mexico City", group: "Group K", team1Flag: "🇺🇿", team2Flag: "🇨🇴" },
-      { id: 19, matchNum: 19, time: "Thu Jun 18, 8:00 AM", team1: "South Africa", team1Code: "RSA", team2: "Czechia", team2Code: "CZE", stadium: "Mexico City Stadium", city: "Mexico City", group: "Group A", team1Flag: "🇿🇦", team2Flag: "🇨🇿" },
-      { id: 20, matchNum: 20, time: "Fri Jun 19, 2:00 AM", team1: "Mexico", team1Code: "MEX", team2: "South Korea", team2Code: "KOR", stadium: "Estadio Guadalajara", city: "Zapopan", group: "Group A", team1Flag: "🇲🇽", team2Flag: "🇰🇷" },
-      { id: 21, matchNum: 21, time: "Fri Jun 19, 5:00 AM", team1: "Bosnia & Herzegovina", team1Code: "BIH", team2: "Switzerland", team2Code: "SUI", stadium: "Toronto Stadium", city: "Toronto", group: "Group B", team1Flag: "🇧🇦", team2Flag: "🇨🇭" },
-      { id: 22, matchNum: 22, time: "Fri Jun 19, 8:00 AM", team1: "Canada", team1Code: "CAN", team2: "Qatar", team2Code: "QAT", stadium: "BC Place", city: "Vancouver", group: "Group B", team1Flag: "🇨🇦", team2Flag: "🇶🇦" },
-      { id: 23, matchNum: 23, time: "Sat Jun 20, 1:00 AM", team1: "Morocco", team1Code: "MAR", team2: "Scotland", team2Code: "SCO", stadium: "SoFi Stadium", city: "Los Angeles", group: "Group C", team1Flag: "🇲🇦", team2Flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
-      { id: 24, matchNum: 24, time: "Sat Jun 20, 4:00 AM", team1: "Brazil", team1Code: "BRA", team2: "Haiti", team2Code: "HTI", stadium: "Levi's Stadium", city: "San Francisco", group: "Group C", team1Flag: "🇧🇷", team2Flag: "🇭🇹" },
-      { id: 25, matchNum: 25, time: "Sat Jun 20, 7:00 AM", team1: "Paraguay", team1Code: "PAR", team2: "Turkey", team2Code: "TUR", stadium: "MetLife Stadium", city: "New York", group: "Group D", team1Flag: "🇵🇾", team2Flag: "🇹🇷" },
-      { id: 26, matchNum: 26, time: "Sun Jun 21, 1:00 AM", team1: "USA", team1Code: "USA", team2: "Australia", team2Code: "AUS", stadium: "Lumen Field", city: "Seattle", group: "Group D", team1Flag: "🇺🇸", team2Flag: "🇦🇺" },
-      { id: 27, matchNum: 27, time: "Sun Jun 21, 4:00 AM", team1: "Curacao", team1Code: "CUW", team2: "Ecuador", team2Code: "ECU", stadium: "Arrowhead Stadium", city: "Kansas City", group: "Group E", team1Flag: "🇨🇼", team2Flag: "🇪🇨" },
-      { id: 28, matchNum: 28, time: "Sun Jun 21, 7:00 AM", team1: "Germany", team1Code: "GER", team2: "Ivory Coast", team2Code: "CIV", stadium: "NRG Stadium", city: "Houston", group: "Group E", team1Flag: "🇩🇪", team2Flag: "🇨🇮" },
-      { id: 29, matchNum: 29, time: "Mon Jun 22, 1:00 AM", team1: "Japan", team1Code: "JPN", team2: "Tunisia", team2Code: "TUN", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "Group F", team1Flag: "🇯🇵", team2Flag: "🇹🇳" },
-      { id: 30, matchNum: 30, time: "Mon Jun 22, 4:00 AM", team1: "Netherlands", team1Code: "NED", team2: "Sweden", team2Code: "SWE", stadium: "AT&T Stadium", city: "Dallas", group: "Group F", team1Flag: "🇳🇱", team2Flag: "🇸🇪" },
-      { id: 31, matchNum: 31, time: "Mon Jun 22, 7:00 AM", team1: "Egypt", team1Code: "EGY", team2: "New Zealand", team2Code: "NZL", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "Group G", team1Flag: "🇪🇬", team2Flag: "🇳🇿" },
-      { id: 32, matchNum: 32, time: "Tue Jun 23, 1:00 AM", team1: "Belgium", team1Code: "BEL", team2: "Iran", team2Code: "IRN", stadium: "M&T Bank Stadium", city: "Baltimore", group: "Group G", team1Flag: "🇧🇪", team2Flag: "🇮🇷" },
-      { id: 33, matchNum: 33, time: "Wed Jun 24, 1:00 AM", team1: "Mexico", team1Code: "MEX", team2: "Czechia", team2Code: "CZE", stadium: "Estadio Monterrey", city: "Monterrey", group: "Group A", team1Flag: "🇲🇽", team2Flag: "🇨🇿" },
-      { id: 34, matchNum: 34, time: "Wed Jun 24, 1:00 AM", team1: "South Africa", team1Code: "RSA", team2: "South Korea", team2Code: "KOR", stadium: "Estadio Guadalajara", city: "Zapopan", group: "Group A", team1Flag: "🇿🇦", team2Flag: "🇰🇷" },
-      { id: 35, matchNum: 35, time: "Wed Jun 24, 5:00 AM", team1: "Canada", team1Code: "CAN", team2: "Switzerland", team2Code: "SUI", stadium: "BC Place", city: "Vancouver", group: "Group B", team1Flag: "🇨🇦", team2Flag: "🇨🇭" },
-      { id: 36, matchNum: 36, time: "Wed Jun 24, 5:00 AM", team1: "Bosnia & Herzegovina", team1Code: "BIH", team2: "Qatar", team2Code: "QAT", stadium: "Toronto Stadium", city: "Toronto", group: "Group B", team1Flag: "🇧🇦", team2Flag: "🇶🇦" },
-      { id: 37, matchNum: 37, time: "Thu Jun 25, 1:00 AM", team1: "Brazil", team1Code: "BRA", team2: "Scotland", team2Code: "SCO", stadium: "SoFi Stadium", city: "Los Angeles", group: "Group C", team1Flag: "🇧🇷", team2Flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
-      { id: 38, matchNum: 38, time: "Thu Jun 25, 1:00 AM", team1: "Morocco", team1Code: "MAR", team2: "Haiti", team2Code: "HTI", stadium: "Levi's Stadium", city: "San Francisco", group: "Group C", team1Flag: "🇲🇦", team2Flag: "🇭🇹" },
-      { id: 39, matchNum: 39, time: "Thu Jun 25, 7:00 AM", team1: "USA", team1Code: "USA", team2: "Turkey", team2Code: "TUR", stadium: "MetLife Stadium", city: "New York", group: "Group D", team1Flag: "🇺🇸", team2Flag: "🇹🇷" },
-      { id: 40, matchNum: 40, time: "Thu Jun 25, 7:00 AM", team1: "Paraguay", team1Code: "PAR", team2: "Australia", team2Code: "AUS", stadium: "Lumen Field", city: "Seattle", group: "Group D", team1Flag: "🇵🇾", team2Flag: "🇦🇺" },
-      { id: 41, matchNum: 41, time: "Fri Jun 26, 1:00 AM", team1: "Germany", team1Code: "GER", team2: "Ecuador", team2Code: "ECU", stadium: "NRG Stadium", city: "Houston", group: "Group E", team1Flag: "🇩🇪", team2Flag: "🇪🇨" },
-      { id: 42, matchNum: 42, time: "Fri Jun 26, 1:00 AM", team1: "Curacao", team1Code: "CUW", team2: "Ivory Coast", team2Code: "CIV", stadium: "Arrowhead Stadium", city: "Kansas City", group: "Group E", team1Flag: "🇨🇼", team2Flag: "🇨🇮" },
-      { id: 43, matchNum: 43, time: "Fri Jun 26, 7:00 AM", team1: "Netherlands", team1Code: "NED", team2: "Tunisia", team2Code: "TUN", stadium: "AT&T Stadium", city: "Dallas", group: "Group F", team1Flag: "🇳🇱", team2Flag: "🇹🇳" },
-      { id: 44, matchNum: 44, time: "Fri Jun 26, 7:00 AM", team1: "Japan", team1Code: "JPN", team2: "Sweden", team2Code: "SWE", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "Group F", team1Flag: "🇯🇵", team2Flag: "🇸🇪" },
-      { id: 45, matchNum: 45, time: "Sat Jun 27, 1:00 AM", team1: "Belgium", team1Code: "BEL", team2: "New Zealand", team2Code: "NZL", stadium: "M&T Bank Stadium", city: "Baltimore", group: "Group G", team1Flag: "🇧🇪", team2Flag: "🇳🇿" },
-      { id: 46, matchNum: 46, time: "Sat Jun 27, 4:00 AM", team1: "Egypt", team1Code: "EGY", team2: "Iran", team2Code: "IRN", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "Group G", team1Flag: "🇪🇬", team2Flag: "🇮🇷" },
-      { id: 47, matchNum: 47, time: "Sat Jun 27, 7:00 AM", team1: "Spain", team1Code: "ESP", team2: "Uruguay", team2Code: "URU", stadium: "Lumen Field", city: "Seattle", group: "Group H", team1Flag: "🇪🇸", team2Flag: "🇺🇾" },
-      { id: 48, matchNum: 48, time: "Sun Jun 28, 1:00 AM", team1: "Cape Verde", team1Code: "CPV", team2: "Saudi Arabia", team2Code: "KSA", stadium: "Estadio Monterrey", city: "Monterrey", group: "Group H", team1Flag: "🇨🇻", team2Flag: "🇸🇦" }
+      { id: 5, matchNum: 5, time: "Sun Jun 14, 1:00 AM", team1: "Qatar", team1Code: "QAT", team2: "Switzerland", team2Code: "SUI", stadium: "Levi's Stadium", city: "Santa Clara", group: "Group B", team1Flag: "🇶🇦", team2Flag: "🇨🇭" },
+      { id: 6, matchNum: 6, time: "Sun Jun 14, 4:00 AM", team1: "Brazil", team1Code: "BRA", team2: "Morocco", team2Code: "MAR", stadium: "MetLife Stadium", city: "East Rutherford", group: "Group C", team1Flag: "🇧🇷", team2Flag: "🇲🇦" },
+      { id: 7, matchNum: 7, time: "Sun Jun 14, 7:00 AM", team1: "Haiti", team1Code: "HTI", team2: "Scotland", team2Code: "SCO", stadium: "Gillette Stadium", city: "Foxborough", group: "Group C", team1Flag: "🇭🇹", team2Flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
+      { id: 8, matchNum: 8, time: "Sun Jun 14, 10:00 AM", team1: "Australia", team1Code: "AUS", team2: "Turkey", team2Code: "TUR", stadium: "BC Place", city: "Vancouver", group: "Group D", team1Flag: "🇦🇺", team2Flag: "🇹🇷" },
+      { id: 9, matchNum: 9, time: "Sun Jun 14, 11:00 PM", team1: "Germany", team1Code: "GER", team2: "Curacao", team2Code: "CUW", stadium: "NRG Stadium", city: "Houston", group: "Group E", team1Flag: "🇩🇪", team2Flag: "🇨🇼" },
+      { id: 10, matchNum: 10, time: "Mon Jun 15, 2:00 AM", team1: "Netherlands", team1Code: "NED", team2: "Japan", team2Code: "JPN", stadium: "AT&T Stadium", city: "Arlington", group: "Group F", team1Flag: "🇳🇱", team2Flag: "🇯🇵" },
+      { id: 11, matchNum: 11, time: "Mon Jun 15, 5:00 AM", team1: "Ivory Coast", team1Code: "CIV", team2: "Ecuador", team2Code: "ECU", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "Group E", team1Flag: "🇨🇮", team2Flag: "🇪🇨" },
+      { id: 12, matchNum: 12, time: "Mon Jun 15, 8:00 AM", team1: "Sweden", team1Code: "SWE", team2: "Tunisia", team2Code: "TUN", stadium: "Estadio Guadalajara", city: "Zapopan", group: "Group F", team1Flag: "🇸🇪", team2Flag: "🇹🇳" },
+      { id: 13, matchNum: 13, time: "Mon Jun 15, 10:00 PM", team1: "Spain", team1Code: "ESP", team2: "Cape Verde", team2Code: "CPV", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "Group H", team1Flag: "🇪🇸", team2Flag: "🇨🇻" },
+      { id: 14, matchNum: 14, time: "Tue Jun 16, 1:00 AM", team1: "Belgium", team1Code: "BEL", team2: "Egypt", team2Code: "EGY", stadium: "Lumen Field", city: "Seattle", group: "Group G", team1Flag: "🇧🇪", team2Flag: "🇪🇬" },
+      { id: 15, matchNum: 15, time: "Tue Jun 16, 4:00 AM", team1: "Saudi Arabia", team1Code: "KSA", team2: "Uruguay", team2Code: "URU", stadium: "Hard Rock Stadium", city: "Miami", group: "Group H", team1Flag: "🇸🇦", team2Flag: "🇺🇾" },
+      { id: 16, matchNum: 16, time: "Tue Jun 16, 7:00 AM", team1: "Iran", team1Code: "IRN", team2: "New Zealand", team2Code: "NZL", stadium: "SoFi Stadium", city: "Inglewood", group: "Group G", team1Flag: "🇮🇷", team2Flag: "🇳🇿" },
+      { id: 17, matchNum: 17, time: "Wed Jun 17, 1:00 AM", team1: "France", team1Code: "FRA", team2: "Senegal", team2Code: "SEN", stadium: "MetLife Stadium", city: "East Rutherford", group: "Group I", team1Flag: "🇫🇷", team2Flag: "🇸🇳" },
+      { id: 18, matchNum: 18, time: "Wed Jun 17, 4:00 AM", team1: "Iraq", team1Code: "IRQ", team2: "Norway", team2Code: "NOR", stadium: "Gillette Stadium", city: "Foxborough", group: "Group I", team1Flag: "🇮🇶", team2Flag: "🇳🇴" },
+      { id: 19, matchNum: 19, time: "Wed Jun 17, 7:00 AM", team1: "Argentina", team1Code: "ARG", team2: "Algeria", team2Code: "ALG", stadium: "Arrowhead Stadium", city: "Kansas City", group: "Group J", team1Flag: "🇦🇷", team2Flag: "🇩🇿" },
+      { id: 20, matchNum: 20, time: "Wed Jun 17, 10:00 AM", team1: "Austria", team1Code: "AUT", team2: "Jordan", team2Code: "JOR", stadium: "Levi's Stadium", city: "Santa Clara", group: "Group J", team1Flag: "🇦🇹", team2Flag: "🇯🇴" },
+      { id: 21, matchNum: 21, time: "Wed Jun 17, 11:00 PM", team1: "Portugal", team1Code: "POR", team2: "DR Congo", team2Code: "COD", stadium: "NRG Stadium", city: "Houston", group: "Group K", team1Flag: "🇵🇹", team2Flag: "🇨🇩" },
+      { id: 22, matchNum: 22, time: "Thu Jun 18, 2:00 AM", team1: "England", team1Code: "ENG", team2: "Croatia", team2Code: "CRO", stadium: "AT&T Stadium", city: "Arlington", group: "Group L", team1Flag: "🏴\u200d󠁢󠁥󠁮󠁧󠁿", team2Flag: "🇭🇷" },
+      { id: 23, matchNum: 23, time: "Thu Jun 18, 5:00 AM", team1: "Ghana", team1Code: "GHA", team2: "Panama", team2Code: "PAN", stadium: "BMO Field", city: "Toronto", group: "Group L", team1Flag: "🇬🇭", team2Flag: "🇵🇦" },
+      { id: 24, matchNum: 24, time: "Thu Jun 18, 8:00 AM", team1: "Uzbekistan", team1Code: "UZB", team2: "Colombia", team2Code: "COL", stadium: "Estadio Azteca", city: "Mexico City", group: "Group K", team1Flag: "🇺🇿", team2Flag: "🇨🇴" },
+      { id: 25, matchNum: 25, time: "Thu Jun 18, 10:00 PM", team1: "Czechia", team1Code: "CZE", team2: "South Africa", team2Code: "RSA", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "Group A", team1Flag: "🇨🇿", team2Flag: "🇿🇦" },
+      { id: 26, matchNum: 26, time: "Fri Jun 19, 1:00 AM", team1: "Switzerland", team1Code: "SUI", team2: "Bosnia & Herzegovina", team2Code: "BIH", stadium: "SoFi Stadium", city: "Inglewood", group: "Group B", team1Flag: "🇨🇭", team2Flag: "🇧🇦" },
+      { id: 27, matchNum: 27, time: "Fri Jun 19, 4:00 AM", team1: "Canada", team1Code: "CAN", team2: "Qatar", team2Code: "QAT", stadium: "BC Place", city: "Vancouver", group: "Group B", team1Flag: "🇨🇦", team2Flag: "🇶🇦" },
+      { id: 28, matchNum: 28, time: "Fri Jun 19, 7:00 AM", team1: "Mexico", team1Code: "MEX", team2: "South Korea", team2Code: "KOR", stadium: "Estadio Guadalajara", city: "Zapopan", group: "Group A", team1Flag: "🇲🇽", team2Flag: "🇰🇷" },
+      { id: 29, matchNum: 29, time: "Sat Jun 20, 1:00 AM", team1: "USA", team1Code: "USA", team2: "Australia", team2Code: "AUS", stadium: "Lumen Field", city: "Seattle", group: "Group D", team1Flag: "🇺🇸", team2Flag: "🇦🇺" },
+      { id: 30, matchNum: 30, time: "Sat Jun 20, 4:00 AM", team1: "Scotland", team1Code: "SCO", team2: "Morocco", team2Code: "MAR", stadium: "Gillette Stadium", city: "Foxborough", group: "Group C", team1Flag: "🏴\u200d󠁢󠁳󠁣󠁴󠁿", team2Flag: "🇲🇦" },
+      { id: 31, matchNum: 31, time: "Sat Jun 20, 6:30 AM", team1: "Brazil", team1Code: "BRA", team2: "Haiti", team2Code: "HTI", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "Group C", team1Flag: "🇧🇷", team2Flag: "🇭🇹" },
+      { id: 32, matchNum: 32, time: "Sat Jun 20, 9:00 AM", team1: "Turkey", team1Code: "TUR", team2: "Paraguay", team2Code: "PAR", stadium: "Levi's Stadium", city: "Santa Clara", group: "Group D", team1Flag: "🇹🇷", team2Flag: "🇵🇾" },
+      { id: 33, matchNum: 33, time: "Sat Jun 20, 11:00 PM", team1: "Netherlands", team1Code: "NED", team2: "Sweden", team2Code: "SWE", stadium: "NRG Stadium", city: "Houston", group: "Group F", team1Flag: "🇳🇱", team2Flag: "🇸🇪" },
+      { id: 34, matchNum: 34, time: "Sun Jun 21, 2:00 AM", team1: "Germany", team1Code: "GER", team2: "Ivory Coast", team2Code: "CIV", stadium: "BMO Field", city: "Toronto", group: "Group E", team1Flag: "🇩🇪", team2Flag: "🇨🇮" },
+      { id: 35, matchNum: 35, time: "Sun Jun 21, 6:00 AM", team1: "Ecuador", team1Code: "ECU", team2: "Curacao", team2Code: "CUW", stadium: "Arrowhead Stadium", city: "Kansas City", group: "Group E", team1Flag: "🇪🇨", team2Flag: "🇨🇼" },
+      { id: 36, matchNum: 36, time: "Sun Jun 21, 10:00 AM", team1: "Tunisia", team1Code: "TUN", team2: "Japan", team2Code: "JPN", stadium: "Estadio Guadalajara", city: "Zapopan", group: "Group F", team1Flag: "🇹🇳", team2Flag: "🇯🇵" },
+      { id: 37, matchNum: 37, time: "Sun Jun 21, 10:00 PM", team1: "Spain", team1Code: "ESP", team2: "Saudi Arabia", team2Code: "KSA", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "Group H", team1Flag: "🇪🇸", team2Flag: "🇸🇦" },
+      { id: 38, matchNum: 38, time: "Mon Jun 22, 1:00 AM", team1: "Belgium", team1Code: "BEL", team2: "Iran", team2Code: "IRN", stadium: "SoFi Stadium", city: "Inglewood", group: "Group G", team1Flag: "🇧🇪", team2Flag: "🇮🇷" },
+      { id: 39, matchNum: 39, time: "Mon Jun 22, 4:00 AM", team1: "Uruguay", team1Code: "URU", team2: "Cape Verde", team2Code: "CPV", stadium: "Hard Rock Stadium", city: "Miami", group: "Group H", team1Flag: "🇺🇾", team2Flag: "🇨🇻" },
+      { id: 40, matchNum: 40, time: "Mon Jun 22, 7:00 AM", team1: "New Zealand", team1Code: "NZL", team2: "Egypt", team2Code: "EGY", stadium: "BC Place", city: "Vancouver", group: "Group G", team1Flag: "🇳🇿", team2Flag: "🇪🇬" },
+      { id: 41, matchNum: 41, time: "Mon Jun 22, 11:00 PM", team1: "Argentina", team1Code: "ARG", team2: "Austria", team2Code: "AUT", stadium: "AT&T Stadium", city: "Arlington", group: "Group J", team1Flag: "🇦🇷", team2Flag: "🇦🇹" },
+      { id: 42, matchNum: 42, time: "Tue Jun 23, 3:00 AM", team1: "France", team1Code: "FRA", team2: "Iraq", team2Code: "IRQ", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "Group I", team1Flag: "🇫🇷", team2Flag: "🇮🇶" },
+      { id: 43, matchNum: 43, time: "Tue Jun 23, 6:00 AM", team1: "Norway", team1Code: "NOR", team2: "Senegal", team2Code: "SEN", stadium: "BMO Field", city: "Toronto", group: "Group I", team1Flag: "🇳🇴", team2Flag: "🇸🇳" },
+      { id: 44, matchNum: 44, time: "Tue Jun 23, 9:00 AM", team1: "Jordan", team1Code: "JOR", team2: "Algeria", team2Code: "ALG", stadium: "Levi's Stadium", city: "Santa Clara", group: "Group J", team1Flag: "🇯🇴", team2Flag: "🇩🇿" },
+      { id: 45, matchNum: 45, time: "Tue Jun 23, 11:00 PM", team1: "Portugal", team1Code: "POR", team2: "Uzbekistan", team2Code: "UZB", stadium: "NRG Stadium", city: "Houston", group: "Group K", team1Flag: "🇵🇹", team2Flag: "🇺🇿" },
+      { id: 46, matchNum: 46, time: "Wed Jun 24, 2:00 AM", team1: "England", team1Code: "ENG", team2: "Ghana", team2Code: "GHA", stadium: "Gillette Stadium", city: "Foxborough", group: "Group L", team1Flag: "🏴\u200d󠁢󠁥󠁮󠁧󠁿", team2Flag: "🇬🇭" },
+      { id: 47, matchNum: 47, time: "Wed Jun 24, 5:00 AM", team1: "Panama", team1Code: "PAN", team2: "Croatia", team2Code: "CRO", stadium: "Gillette Stadium", city: "Foxborough", group: "Group L", team1Flag: "🇵🇦", team2Flag: "🇭🇷" },
+      { id: 48, matchNum: 48, time: "Wed Jun 24, 8:00 AM", team1: "Colombia", team1Code: "COL", team2: "DR Congo", team2Code: "COD", stadium: "Estadio Guadalajara", city: "Zapopan", group: "Group K", team1Flag: "🇨🇴", team2Flag: "🇨🇩" },
+
+      // MATCHDAY 3 (MATCHES 49 - 72) - EVERY TEAM REACHES 3 TOTAL MATCHES
+      { id: 49, matchNum: 49, time: "Wed Jun 24, 11:00 PM", team1: "South Korea", team1Code: "KOR", team2: "South Africa", team2Code: "RSA", stadium: "SoFi Stadium", city: "Inglewood", group: "Group A", team1Flag: "🇰🇷", team2Flag: "🇿🇦" },
+      { id: 50, matchNum: 50, time: "Wed Jun 24, 11:00 PM", team1: "Mexico", team1Code: "MEX", team2: "Czechia", team2Code: "CZE", stadium: "Estadio Azteca", city: "Mexico City", group: "Group A", team1Flag: "🇲🇽", team2Flag: "🇨🇿" },
+      { id: 51, matchNum: 51, time: "Thu Jun 25, 3:00 AM", team1: "Bosnia & Herzegovina", team1Code: "BIH", team2: "Qatar", team2Code: "QAT", stadium: "Lincoln Financial Field", city: "Philadelphia", group: "Group B", team1Flag: "🇧🇦", team2Flag: "🇶🇦" },
+      { id: 52, matchNum: 52, time: "Thu Jun 25, 3:00 AM", team1: "Canada", team1Code: "CAN", team2: "Switzerland", team2Code: "SUI", stadium: "BMO Field", city: "Toronto", group: "Group B", team1Flag: "🇨🇦", team2Flag: "🇨🇭" },
+      { id: 53, matchNum: 53, time: "Thu Jun 25, 11:00 PM", team1: "Morocco", team1Code: "MAR", team2: "Haiti", team2Code: "HTI", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "Group C", team1Flag: "🇲🇦", team2Flag: "🇭🇹" },
+      { id: 54, matchNum: 54, time: "Thu Jun 25, 11:00 PM", team1: "Brazil", team1Code: "BRA", team2: "Scotland", team2Code: "SCO", stadium: "MetLife Stadium", city: "East Rutherford", group: "Group C", team1Flag: "🇧🇷", team2Flag: "🏴\u200d󠁢󠁳󠁣󠁴󠁿" },
+      { id: 55, matchNum: 55, time: "Fri Jun 26, 3:00 AM", team1: "Paraguay", team1Code: "PAR", team2: "Australia", team2Code: "AUS", stadium: "Hard Rock Stadium", city: "Miami", group: "Group D", team1Flag: "🇵🇾", team2Flag: "🇦🇺" },
+      { id: 56, matchNum: 56, time: "Fri Jun 26, 3:00 AM", team1: "USA", team1Code: "USA", team2: "Turkey", team2Code: "TUR", stadium: "Lumen Field", city: "Seattle", group: "Group D", team1Flag: "🇺🇸", team2Flag: "🇹🇷" },
+      { id: 57, matchNum: 57, time: "Fri Jun 26, 11:00 PM", team1: "Ecuador", team1Code: "ECU", team2: "Germany", team2Code: "GER", stadium: "Gillette Stadium", city: "Foxborough", group: "Group E", team1Flag: "🇪🇨", team2Flag: "🇩🇪" },
+      { id: 58, matchNum: 58, time: "Fri Jun 26, 11:00 PM", team1: "Curacao", team1Code: "CUW", team2: "Ivory Coast", team2Code: "CIV", stadium: "NRG Stadium", city: "Houston", group: "Group E", team1Flag: "🇨🇼", team2Flag: "🇨🇮" },
+      { id: 59, matchNum: 59, time: "Sat Jun 27, 3:00 AM", team1: "Tunisia", team1Code: "TUN", team2: "Netherlands", team2Code: "NED", stadium: "AT&T Stadium", city: "Arlington", group: "Group F", team1Flag: "🇹🇳", team2Flag: "🇳🇱" },
+      { id: 60, matchNum: 60, time: "Sat Jun 27, 3:00 AM", team1: "Japan", team1Code: "JPN", team2: "Sweden", team2Code: "SWE", stadium: "BC Place", city: "Vancouver", group: "Group F", team1Flag: "🇯🇵", team2Flag: "🇸🇪" },
+      { id: 61, matchNum: 61, time: "Sat Jun 27, 11:00 PM", team1: "Egypt", team1Code: "EGY", team2: "Iran", team2Code: "IRN", stadium: "Arrowhead Stadium", city: "Kansas City", group: "Group G", team1Flag: "🇪🇬", team2Flag: "🇮🇷" },
+      { id: 62, matchNum: 62, time: "Sat Jun 27, 11:00 PM", team1: "Belgium", team1Code: "BEL", team2: "New Zealand", team2Code: "NZL", stadium: "Levi's Stadium", city: "Santa Clara", group: "Group G", team1Flag: "🇧🇪", team2Flag: "🇳🇿" },
+      { id: 63, matchNum: 63, time: "Sun Jun 28, 3:00 AM", team1: "Uruguay", team1Code: "URU", team2: "Spain", team2Code: "ESP", stadium: "Hard Rock Stadium", city: "Miami", group: "Group H", team1Flag: "🇺🇾", team2Flag: "🇪🇸" },
+      { id: 64, matchNum: 64, time: "Sun Jun 28, 3:00 AM", team1: "Cape Verde", team1Code: "CPV", team2: "Saudi Arabia", team2Code: "KSA", stadium: "Estadio Monterrey", city: "Monterrey", group: "Group H", team1Flag: "🇨🇻", team2Flag: "🇸🇦" },
+      { id: 65, matchNum: 65, time: "Sun Jun 28, 11:00 PM", team1: "Norway", team1Code: "NOR", team2: "France", team2Code: "FRA", stadium: "MetLife Stadium", city: "East Rutherford", group: "Group I", team1Flag: "🇳🇴", team2Flag: "🇫🇷" },
+      { id: 66, matchNum: 66, time: "Sun Jun 28, 11:00 PM", team1: "Senegal", team1Code: "SEN", team2: "Iraq", team2Code: "IRQ", stadium: "Gillette Stadium", city: "Foxborough", group: "Group I", team1Flag: "🇸🇳", team2Flag: "🇮🇶" },
+      { id: 67, matchNum: 67, time: "Mon Jun 29, 3:00 AM", team1: "Jordan", team1Code: "JOR", team2: "Argentina", team2Code: "ARG", stadium: "AT&T Stadium", city: "Arlington", group: "Group J", team1Flag: "🇯🇴", team2Flag: "🇦🇷" },
+      { id: 68, matchNum: 68, time: "Mon Jun 29, 3:00 AM", team1: "Algeria", team1Code: "ALG", team2: "Austria", team2Code: "AUT", stadium: "BMO Field", city: "Toronto", group: "Group J", team1Flag: "🇩🇿", team2Flag: "🇦🇹" },
+      { id: 69, matchNum: 69, time: "Mon Jun 29, 11:00 PM", team1: "Colombia", team1Code: "COL", team2: "Portugal", team2Code: "POR", stadium: "Mercedes-Benz Stadium", city: "Atlanta", group: "Group K", team1Flag: "🇨🇴", team2Flag: "🇵🇹" },
+      { id: 70, matchNum: 70, time: "Mon Jun 29, 11:00 PM", team1: "DR Congo", team1Code: "COD", team2: "Uzbekistan", team2Code: "UZB", stadium: "NRG Stadium", city: "Houston", group: "Group K", team1Flag: "🇨🇩", team2Flag: "🇺🇿" },
+      { id: 71, matchNum: 71, time: "Tue Jun 30, 3:00 AM", team1: "Panama", team1Code: "PAN", team2: "England", team2Code: "ENG", stadium: "SoFi Stadium", city: "Inglewood", group: "Group L", team1Flag: "🇵🇦", team2Flag: "🏴\u200d󠁢󠁥󠁮󠁧󠁿" },
+      { id: 72, matchNum: 72, time: "Tue Jun 30, 3:00 AM", team1: "Croatia", team1Code: "CRO", team2: "Ghana", team2Code: "GHA", stadium: "BC Place", city: "Vancouver", group: "Group L", team1Flag: "🇭🇷", team2Flag: "🇬🇭" }
     ];
 
     function App() {
@@ -112,12 +144,11 @@
         return () => clearInterval(interval);
       }, []);
 
-      // Trigger icons re-renders on mutations
       useEffect(() => {
         if (window.lucide) { window.lucide.createIcons(); }
       }, [searchTerm, spacingValue]);
 
-      // ROBUST SEARCH SYSTEM
+      // ADVANCED SEARCH (Country, Group, Date)
       const filteredFixtures = fixtureData.filter((match) => {
         const query = searchTerm.toLowerCase().trim();
         if (!query) return true;
@@ -125,13 +156,13 @@
         const groupName = match.group ? match.group.toLowerCase() : '';
         const country1 = match.team1 ? match.team1.toLowerCase() : '';
         const country2 = match.team2 ? match.team2.toLowerCase() : '';
-        const bdDate = match.time ? match.time.toLowerCase() : '';
+        const matchDate = match.time ? match.time.toLowerCase() : '';
 
         return (
           groupName.includes(query) ||
           country1.includes(query) ||
           country2.includes(query) ||
-          bdDate.includes(query)
+          matchDate.includes(query)
         );
       });
 
@@ -149,7 +180,7 @@
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <img 
-                  src="logo.png"
+                  src="logo.png" 
                   alt="Morning Sun FC Logo" 
                   className="h-12 w-12 object-contain"
                 />
@@ -224,7 +255,7 @@
               </div>
             </section>
 
-            {/* ROBUST SEARCH PARAMETERS */}
+            {/* INTEGRATED MATRICES SEARCH CONTROLS */}
             <section className="bg-[#0b1b33] border border-white/5 rounded-xl p-6 shadow-xl space-y-4">
               <div className="relative w-full">
                 <i data-lucide="search" class="absolute left-4 top-3.5 w-5 h-5 text-gray-400"></i>
@@ -232,26 +263,27 @@
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search by Group (e.g., Group A), Country (e.g., Brazil), or BD Date (e.g., Jun 12)..."
+                  placeholder="Search by Group (e.g. Group C), Country (e.g. Brazil), or Date (e.g. Jun 24)..."
                   className="w-full bg-[#061021] text-white pl-12 pr-4 py-3.5 rounded-xl border border-gray-700/80 focus:outline-none focus:border-[#E5A93B] text-sm font-medium shadow-inner"
                 />
               </div>
               <div className="flex flex-wrap gap-2 items-center text-xs font-bold text-gray-400 uppercase tracking-wider">
-                <span>Try Quick Queries:</span>
-                <button onClick={() => setSearchTerm('Group A')} className="text-[#FAD15B] hover:underline bg-[#061021] px-2.5 py-1 rounded border border-white/5">"Group A"</button>
+                <span>Quick Parameters:</span>
+                <button onClick={() => setSearchTerm('Group C')} className="text-[#FAD15B] hover:underline bg-[#061021] px-2.5 py-1 rounded border border-white/5">"Group C"</button>
                 <button onClick={() => setSearchTerm('Brazil')} className="text-[#FAD15B] hover:underline bg-[#061021] px-2.5 py-1 rounded border border-white/5">"Brazil"</button>
-                <button onClick={() => setSearchTerm('Jun 13')} className="text-[#FAD15B] hover:underline bg-[#061021] px-2.5 py-1 rounded border border-white/5">"Jun 13"</button>
+                <button onClick={() => setSearchTerm('Jun 24')} className="text-[#FAD15B] hover:underline bg-[#061021] px-2.5 py-1 rounded border border-white/5">"Jun 24"</button>
+                <button onClick={() => setSearchTerm('')} className="text-gray-400 hover:underline bg-[#061021] px-2.5 py-1 rounded border border-white/5">Reset Filter</button>
               </div>
             </section>
 
-            <div className="flex items-center justify-between border-b border-gray-880 pb-2">
+            <div className="flex items-center justify-between border-b border-gray-800 pb-2">
               <p className="text-xs uppercase text-gray-400 tracking-widest font-black">Match Matrix Layout</p>
               <p className="text-xs text-gray-400">
-                Matches found: <span className="text-[#FAD15B] font-bold">{filteredFixtures.length}</span>
+                Matches shown: <span className="text-[#FAD15B] font-bold">{filteredFixtures.length}</span> / 72
               </p>
             </div>
 
-            {/* MAIN FIXTURE RENDERING GRID (ALL SHOWN ON A SINGLE PAGE) */}
+            {/* MAIN FIXTURE RENDERING GRID */}
             <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredFixtures.length > 0 ? (
                 filteredFixtures.map((match) => (
@@ -328,7 +360,7 @@
               ) : (
                 <div className="col-span-full text-center py-16 bg-[#0b1b33] border border-white/5 rounded-2xl">
                   <i data-lucide="alert-circle" class="w-8 h-8 text-amber-400 mx-auto mb-2"></i>
-                  <p className="text-sm font-bold text-gray-300">No match records matched your query parameters.</p>
+                  <p className="text-sm font-bold text-gray-300">No match records match your targeted parameters.</p>
                 </div>
               )}
             </section>
@@ -337,7 +369,7 @@
             <footer className="mt-8 bg-gradient-to-r from-[#0E2A54] to-[#112f57] border border-[#FAD15B]/30 rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-2xl">
               <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
                 <img 
-                  src="logo.png"
+                  src="logo.png" 
                   alt="Morning Sun FC Logo" 
                   className="h-14 w-14 object-contain"
                 />
